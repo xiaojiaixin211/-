@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>海南大学考研真题刷题</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand">海南大学 · 考研真题刷题</div>
+      <button class="nav-toggle" aria-label="菜单">☰</button>
+      <nav class="nav">
+        <a data-target="home">首页</a>
+        <a data-target="papers">历年套卷</a>
+        <a data-target="category">分类刷题</a>
+        <a data-target="wrong">错题本<span class="badge-count" id="nav-wrong-badge"></span></a>
+        <a data-target="favorites">我的收藏<span class="badge-count fav" id="nav-fav-badge"></span></a>
+        <a data-target="upload">上传新卷</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="load-banner" class="load-banner hidden"></div>
+
+    <section id="view-home" class="view"></section>
+    <section id="view-papers" class="view"></section>
+    <section id="view-category" class="view"></section>
+    <section id="view-wrong" class="view"></section>
+    <section id="view-favorites" class="view"></section>
+
+    <section id="view-upload" class="view">
+      <div class="panel">
+        <h2 class="panel-title">上传新卷 / 追加题库</h2>
+        <p class="muted">支持上传 JSON 文件，系统会自动识别其中的题目并追加合并到当前题库（保存到本地浏览器，刷新后仍有效）。</p>
+        <div id="drop-zone" class="drop-zone">
+          <input type="file" id="file-input" accept=".json,application/json" multiple>
+          <p class="dz-main">点击选择文件，或将 .json 文件拖拽到此处</p>
+          <p class="muted small">题目字段建议包含：title、year、subject、question_type、analysis、frequency_star、tags</p>
+        </div>
+        <div id="upload-info" class="muted" style="margin-top:14px">当前题库共 <b id="lib-count">0</b> 题</div>
+        <div id="upload-status"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+    <p>正在加载题库…</p>
+  </div>
+
+  <div id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
