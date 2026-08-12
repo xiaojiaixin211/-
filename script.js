@@ -1129,6 +1129,7 @@ fetch("questions.json")
   .catch((error) => console.error("加载 questions.json 失败:", error));
 
 // 2. 搜索过滤与跳转函数
+// 2. 搜索过滤与跳转函数
 function filterQuestions() {
   const keyword = document
     .getElementById("searchInput")
@@ -1166,10 +1167,30 @@ function filterQuestions() {
     item.style.borderBottom = "1px solid #eee";
     item.innerHTML = `<strong>${q.title}</strong> <span style="color:#666; font-size:12px;">[${q.subject || "未分类"}]</span>`;
 
-    // 点击后跳转/定位到对应题目
+    // 点击后跳转并定位到对应分类和题目
     item.onclick = () => {
-      // 假设页面中题目的 DOM 元素 ID 与 q.id 一致
-      window.location.hash = q.id;
+      const categoryNavBtn = document.querySelector('[data-target="category"]');
+      if (categoryNavBtn) {
+        categoryNavBtn.click();
+      }
+
+      setTimeout(() => {
+        const targetElement =
+          document.getElementById(`question-${q.id}`) ||
+          document.getElementById(q.id);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
+          targetElement.style.transition = "background-color 0.5s";
+          targetElement.style.backgroundColor = "#fff3cd";
+          setTimeout(() => {
+            targetElement.style.backgroundColor = "";
+          }, 2000);
+        }
+      }, 200);
+
+      // 清空搜索框和结果，方便继续刷题
+      document.getElementById("searchInput").value = "";
+      document.getElementById("resultsList").innerHTML = "";
     };
 
     resultsList.appendChild(item);
