@@ -1175,15 +1175,16 @@ function filterQuestions() {
         categoryNavBtn.click();
       }
 
-      // 2. 自动匹配并点击对应的科目标签按钮（例如“现代文学”）
+      // 2. 精准匹配所有科目按钮，支持带数字统计的标签
       const subjectName = q.subject;
       if (subjectName) {
-        const subjectButtons = document.querySelectorAll(
-          ".subject-btn, button, .tag",
-        );
-        subjectButtons.forEach((btn) => {
-          if (btn.textContent.includes(subjectName)) {
+        const allButtons = document.querySelectorAll("button");
+        let matched = false;
+        allButtons.forEach((btn) => {
+          const btnText = btn.textContent ? btn.textContent.trim() : "";
+          if (!matched && btnText.includes(subjectName)) {
             btn.click();
+            matched = true;
           }
         });
       }
@@ -1192,20 +1193,24 @@ function filterQuestions() {
       setTimeout(() => {
         const targetElement =
           document.getElementById(`question-${q.id}`) ||
-          document.getElementById(q.id);
+          document.getElementById(q.id) ||
+          document.querySelector(`[data-id="${q.id}"]`);
+
         if (targetElement) {
           targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
-          targetElement.style.transition = "background-color 0.5s";
+          targetElement.style.transition = "background-color 0.5s ease";
           targetElement.style.backgroundColor = "#fff3cd";
           setTimeout(() => {
             targetElement.style.backgroundColor = "";
           }, 2000);
         }
-      }, 300);
+      }, 400);
 
-      // 4. 清空搜索框和结果
-      document.getElementById("searchInput").value = "";
-      document.getElementById("resultsList").innerHTML = "";
+      // 4. 清空搜索框和下拉列表
+      const searchInput = document.getElementById("searchInput");
+      const resultsList = document.getElementById("resultsList");
+      if (searchInput) searchInput.value = "";
+      if (resultsList) resultsList.innerHTML = "";
     };
     resultsList.appendChild(item);
   });
