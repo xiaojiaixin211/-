@@ -1175,7 +1175,7 @@ function filterQuestions() {
         categoryNavBtn.click();
       }
 
-      // 2. 精准匹配所有科目按钮，支持带数字统计的标签
+      // 2. 精准匹配并点击对应的科目标签按钮（如“现代文学”）
       const subjectName = q.subject;
       if (subjectName) {
         const allButtons = document.querySelectorAll("button");
@@ -1189,24 +1189,37 @@ function filterQuestions() {
         });
       }
 
-      // 3. 延迟等待页面渲染完成后，滚动并高亮定位到具体题目卡片
-      setTimeout(() => {
+      // 3. 轮询动态检查：等待页面异步渲染完成后，精准滚动并高亮定位到具体题目卡片
+      let attempts = 0;
+      const maxAttempts = 15; // 最多尝试 15 次（约 3 秒内持续检查）
+      const checkTimer = setInterval(() => {
+        attempts++;
+        // 多重方案查找目标元素：支持 ID、data-id、或直接通过题目标题文字查找
         const targetElement =
           document.getElementById(`question-${q.id}`) ||
           document.getElementById(q.id) ||
-          document.querySelector(`[data-id="${q.id}"]`);
+          document.querySelector(`[data-id="${q.id}"]`) ||
+          Array.from(document.querySelectorAll("div, section, article")).find(
+            (el) =>
+              el.textContent &&
+              el.textContent.includes(q.title) &&
+              el.textContent.length < 500,
+          );
 
         if (targetElement) {
+          clearInterval(checkTimer); // 找到后立即停止轮询
           targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
           targetElement.style.transition = "background-color 0.5s ease";
-          targetElement.style.backgroundColor = "#fff3cd";
+          targetElement.style.backgroundColor = "#fff3cd"; // 浅黄色高亮
           setTimeout(() => {
             targetElement.style.backgroundColor = "";
           }, 2000);
+        } else if (attempts >= maxAttempts) {
+          clearInterval(checkTimer); // 超时未找到则停止
         }
-      }, 400);
+      }, 200); // 每 200ms 检查一次
 
-      // 4. 清空搜索框和下拉列表
+      // 4. 清空搜索框和结果
       const searchInput = document.getElementById("searchInput");
       const resultsList = document.getElementById("resultsList");
       if (searchInput) searchInput.value = "";
