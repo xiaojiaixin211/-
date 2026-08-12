@@ -1115,3 +1115,63 @@ async function submitForAIGrade(qIndex) {
 
 // 确保网页按钮能全局调用到打分函数
 window.submitForAIGrade = submitForAIGrade;
+// ====== 新增：搜索功能相关逻辑 ======
+let allQuestions = []; // 存储所有题目数据
+
+// 1. 尝试从本地或通过 fetch 加载 questions.json 数据
+// （如果您的项目中已经有了加载 questions.json 的代码，可以复用原有的变量，只需确保全局能访问到题目数据即可）
+fetch("questions.json")
+  .then((response) => response.json())
+  .then((data) => {
+    allQuestions = data;
+    console.log(`题目数据加载成功，共 ${allQuestions.length} 题`);
+  })
+  .catch((error) => console.error("加载 questions.json 失败:", error));
+
+// 2. 搜索过滤与跳转函数
+function filterQuestions() {
+  const keyword = document
+    .getElementById("searchInput")
+    .value.trim()
+    .toLowerCase();
+  const resultsList = document.getElementById("resultsList");
+
+  // 清空上一次的搜索结果
+  resultsList.innerHTML = "";
+
+  // 如果输入框空了，直接返回
+  if (!keyword) return;
+
+  // 筛选匹配的题目（支持标题 title 或标签 tags 模糊匹配）
+  const filtered = allQuestions.filter((q) => {
+    const matchTitle = q.title && q.title.toLowerCase().includes(keyword);
+    const matchTags =
+      q.tags && q.tags.some((tag) => tag.toLowerCase().includes(keyword));
+    return matchTitle || matchTags;
+  });
+
+  // 如果没有找到匹配项
+  if (filtered.length === 0) {
+    resultsList.innerHTML =
+      '<div style="padding: 10px; color: #888;">未找到相关题目</div>';
+    return;
+  }
+
+  // 渲染搜索结果列表
+  filtered.forEach((q) => {
+    const item = document.createElement("div");
+    item.className = "search-result-item";
+    item.style.padding = "8px 12px";
+    item.style.cursor = "pointer";
+    item.style.borderBottom = "1px solid #eee";
+    item.innerHTML = `<strong>${q.title}</strong> <span style="color:#666; font-size:12px;">[${q.subject || "未分类"}]</span>`;
+
+    // 点击后跳转/定位到对应题目
+    item.onclick = () => {
+      // 假设页面中题目的 DOM 元素 ID 与 q.id 一致
+      window.location.hash = q.id;
+    };
+
+    resultsList.appendChild(item);
+  });
+}
