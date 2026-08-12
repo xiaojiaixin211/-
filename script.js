@@ -1169,37 +1169,41 @@ function filterQuestions() {
 
     // 点击后跳转并定位到对应分类和题目
     item.onclick = () => {
-      // 1. 自动切换到“分类刷题”视图
+      // 1. 切换到“分类刷题”大类视图
       const categoryNavBtn = document.querySelector('[data-target="category"]');
       if (categoryNavBtn) {
         categoryNavBtn.click();
       }
 
-      // 2. 精准匹配并点击对应的科目标签按钮（如“现代文学”）
-      const subjectName = q.subject;
-      if (subjectName) {
-        const allButtons = document.querySelectorAll("button");
-        let matched = false;
-        allButtons.forEach((btn) => {
-          const btnText = btn.textContent ? btn.textContent.trim() : "";
-          if (!matched && btnText.includes(subjectName)) {
-            btn.click();
-            matched = true;
-          }
-        });
-      }
+      // 2. 延迟 200ms 等大类视图渲染后，精确寻找并点击对应的科目标签（如“现代文学”）
+      setTimeout(() => {
+        const subjectName = q.subject; // 获取当前题目的科目（例如“现代文学”）
+        if (subjectName) {
+          // 查找页面上所有可能的按钮或可点击标签
+          const allButtons = document.querySelectorAll(
+            "button, .subject-btn, .tag, a",
+          );
+          let clicked = false;
+          allButtons.forEach((el) => {
+            const text = el.textContent ? el.textContent.trim() : "";
+            // 如果该元素的文字包含了科目名称，且文字长度较短（避免误伤大段文章）
+            if (!clicked && text.includes(subjectName) && text.length < 15) {
+              el.click();
+              clicked = true;
+            }
+          });
+        }
+      }, 200);
 
-      // 3. 轮询动态检查：等待页面异步渲染完成后，精准滚动并高亮定位到具体题目卡片
-      let attempts = 0;
-      const maxAttempts = 15; // 最多尝试 15 次（约 3 秒内持续检查）
-      const checkTimer = setInterval(() => {
-        attempts++;
-        // 多重方案查找目标元素：支持 ID、data-id、或直接通过题目标题文字查找
+      // 3. 延迟 600ms 后启动滚动定位，确保题目卡片已完全加载
+      setTimeout(() => {
         const targetElement =
           document.getElementById(`question-${q.id}`) ||
           document.getElementById(q.id) ||
           document.querySelector(`[data-id="${q.id}"]`) ||
-          Array.from(document.querySelectorAll("div, section, article")).find(
+          Array.from(
+            document.querySelectorAll("div, section, article, li"),
+          ).find(
             (el) =>
               el.textContent &&
               el.textContent.includes(q.title) &&
@@ -1207,19 +1211,16 @@ function filterQuestions() {
           );
 
         if (targetElement) {
-          clearInterval(checkTimer); // 找到后立即停止轮询
           targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
           targetElement.style.transition = "background-color 0.5s ease";
-          targetElement.style.backgroundColor = "#fff3cd"; // 浅黄色高亮
+          targetElement.style.backgroundColor = "#fff3cd"; // 浅黄高亮
           setTimeout(() => {
             targetElement.style.backgroundColor = "";
           }, 2000);
-        } else if (attempts >= maxAttempts) {
-          clearInterval(checkTimer); // 超时未找到则停止
         }
-      }, 200); // 每 200ms 检查一次
+      }, 600);
 
-      // 4. 清空搜索框和结果
+      // 4. 清空搜索框和结果下拉菜单
       const searchInput = document.getElementById("searchInput");
       const resultsList = document.getElementById("resultsList");
       if (searchInput) searchInput.value = "";
