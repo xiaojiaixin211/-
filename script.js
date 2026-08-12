@@ -1169,11 +1169,26 @@ function filterQuestions() {
 
     // 点击后跳转并定位到对应分类和题目
     item.onclick = () => {
+      // 1. 自动切换到“分类刷题”视图
       const categoryNavBtn = document.querySelector('[data-target="category"]');
       if (categoryNavBtn) {
         categoryNavBtn.click();
       }
 
+      // 2. 自动匹配并点击对应的科目标签按钮（例如“现代文学”）
+      const subjectName = q.subject;
+      if (subjectName) {
+        const subjectButtons = document.querySelectorAll(
+          ".subject-btn, button, .tag",
+        );
+        subjectButtons.forEach((btn) => {
+          if (btn.textContent.includes(subjectName)) {
+            btn.click();
+          }
+        });
+      }
+
+      // 3. 延迟等待页面渲染完成后，滚动并高亮定位到具体题目卡片
       setTimeout(() => {
         const targetElement =
           document.getElementById(`question-${q.id}`) ||
@@ -1186,13 +1201,12 @@ function filterQuestions() {
             targetElement.style.backgroundColor = "";
           }, 2000);
         }
-      }, 200);
+      }, 300);
 
-      // 清空搜索框和结果，方便继续刷题
+      // 4. 清空搜索框和结果
       document.getElementById("searchInput").value = "";
       document.getElementById("resultsList").innerHTML = "";
     };
-
     resultsList.appendChild(item);
   });
 }
