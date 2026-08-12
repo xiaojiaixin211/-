@@ -296,6 +296,7 @@
   }
 
   // ---------- 题目卡片渲染 ----------
+  // ---------- 题目卡片渲染 ----------
   function cardHtml(q, showAnswer) {
     var inWrong = state.wrong.has(q.uid);
     var inFav = state.fav.has(q.uid);
@@ -358,6 +359,14 @@
       (inFav ? "⭐ 已收藏" : "⭐ 收藏") +
       "</button>" +
       "</div>" +
+      // ====== 新增：AI 批改输入与结果区域 ======
+      '<div class="ai-grade-container" style="margin-top: 15px; border-top: 1px dashed #e0e0e0; padding-top: 10px;">' +
+      '  <label style="font-weight: bold; display: block; margin-bottom: 6px; color: #333;">✍️ 你的作答 / 答题思路：</label>' +
+      '  <textarea class="card-answer-input" rows="4" placeholder="在此输入你的回答或解题思路..." style="width: 100%; border: 1px solid #ccc; border-radius: 6px; padding: 10px; font-size: 14px; box-sizing: border-box;"></textarea>' +
+      '  <button class="btn btn-primary card-grade-btn" data-action="card-ai-grade" style="margin-top: 8px; background: #0056b3; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold;">🤖 AI 智能批改打分</button>' +
+      '  <div class="ai-result-box card-ai-result" style="display: none; margin-top: 12px; background: #f8f9fa; padding: 12px; border-radius: 6px; border-left: 4px solid #0056b3;"></div>' +
+      "</div>" +
+      // =====================================
       "</div>"
     );
   }
@@ -942,16 +951,19 @@
         return;
       }
 
-      var actBtn = t.closest("[data-action]");
       if (actBtn) {
         handleCardAction(actBtn);
         return;
       }
 
-      var mb = t.closest("[data-mode]");
-      if (mb) {
-        state.paperMode = mb.dataset.mode;
-        renderPapers();
+      var actBtn = t.closest("[data-action]");
+      if (actBtn) {
+        var action = actBtn.dataset.action;
+        if (action === "card-ai-grade") {
+          handleCardAIGrade(actBtn);
+          return;
+        }
+        handleCardAction(actBtn);
         return;
       }
       var pa = t.closest("[data-act]");
@@ -988,6 +1000,7 @@
       }
     });
   }
+  var actBtn = t.closest("[data-action]");
 
   // ---------- 加载失败提示 ----------
   function showLoadBanner() {
@@ -1229,3 +1242,86 @@ function filterQuestions() {
     resultsList.appendChild(item);
   });
 }
+async function handleCardAIGrade(btn) {
+  var card = btn.closest(".q-card");
+  if (!card) return;
+  var uid = card.dataset.uid;
+  var q = null;
+  for (var i = 0; i < state.all.length; i++) {
+    if (state.all[i].uid === uid) {
+      q = state.all[i];
+      break;
+    }
+  }
+  if (!q) return;
+
+  var inputEl = card.querySelector(".card-answer-input");
+  var resultBox = card.querySelector(".card-ai-result");
+  var submitBtn = btn;
+
+  if (!inputEl || !inputEl.value.trim()) {
+    alert("请先输入你的答案再提交打分哦！");
+    return;
+  }
+
+  var userAnswer = inputEl.value.trim();
+  submitBtn.disabled = true;
+  submitBtn.innerText = "⏳ 阅卷老师打分中...";
+  resultBox.style.display = "block";
+  resultBox.innerHTML =
+    "<p style='color: #666; margin: 0;'>AI 正在对照采分点分析您的回答...</p>";
+
+  try {
+    var WORKER_URL = "https://haida-ai-grader.xiaojiaixin211.workers.dev/";
+
+    var response = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: q.title,
+        analysis: q.analysis || "",
+        max_score: 10,
+        user_answer: userAnswer,
+      }),
+    });
+
+    var data = await response.json();
+
+    if (data.error) {
+      resultBox.innerHTML =
+        "<p style='color: #dc3545; margin: 0;'>" + data.error + "</p>";
+    } else {
+      var hitHtml =
+        data.hit_points && data.hit_points.length > 0
+          ? data.hit_points.join("；")
+          : "无明显命中";
+      var missHtml =
+        data.miss_points && data.miss_points.length > 0
+          ? data.miss_points.join("；")
+          : "无遗漏";
+
+      resultBox.innerHTML =
+        '<div style="font-size: 16px; font-weight: bold; color: #28a745; margin-bottom: 8px;">🎯 得分：' +
+        data.score +
+        " / " +
+        data.max_score +
+        " 分</div>" +
+        '<div style="margin-bottom: 6px; font-size: 13px; color: #212529;"><strong>✅ 命中得分点：</strong> ' +
+        hitHtml +
+        "</div>" +
+        '<div style="margin-bottom: 6px; font-size: 13px; color: #dc3545;"><strong>❌ 遗漏/错误采分点：</strong> ' +
+        missHtml +
+        "</div>" +
+        '<div style="background: #ffffff; padding: 8px 10px; border-radius: 4px; font-size: 13px; color: #495057; border: 1px solid #e9ecef; margin-top: 6px;"><strong>💡 阅卷点评：</strong>' +
+        data.feedback +
+        "</div>";
+    }
+  } catch (err) {
+    resultBox.innerHTML =
+      "<p style='color: #dc3545; margin: 0;'>网络请求失败，请稍后再试。</p>";
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.innerText = "🤖 AI 智能批改打分";
+  }
+}
+window.handleCardAIGrade = handleCardAIGrade;
