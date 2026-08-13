@@ -2269,12 +2269,19 @@
     }
   }
   function findActivation(code) {
-    if (!window.ACTIVATION_CODES) return null;
-    return (
-      window.ACTIVATION_CODES.find(function (c) {
-        return c.code === code;
-      }) || null
-    );
+    if (!code || typeof code !== "string") return null;
+    var cleanCode = code.trim();
+
+    // 如果是以 MONTH- 开头的，动态返回一个月卡对象
+    if (cleanCode.startsWith("MONTH-")) {
+      return { code: cleanCode, type: "month" };
+    }
+    // 如果是以 PERM- 开头的，动态返回一个永久卡对象
+    else if (cleanCode.startsWith("PERM-")) {
+      return { code: cleanCode, type: "permanent" };
+    }
+
+    return null; // 其他格式视为无效
   }
 
   // Redeem an activation code for the current user.
