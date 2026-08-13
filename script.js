@@ -2268,29 +2268,29 @@
       saveUsedActivationCodes(a);
     }
   }
+  // ---------- Activation code core logic ----------
+  // 1. 动态识别激活码类型的函数
   function findActivation(code) {
     if (!code || typeof code !== "string") return null;
     var cleanCode = code.trim();
 
-    // 如果是以 MONTH- 开头的，动态返回一个月卡对象
     if (cleanCode.startsWith("MONTH-")) {
       return { code: cleanCode, type: "month" };
-    }
-    // 如果是以 PERM- 开头的，动态返回一个永久卡对象
-    else if (cleanCode.startsWith("PERM-")) {
+    } else if (cleanCode.startsWith("PERM-")) {
       return { code: cleanCode, type: "permanent" };
     }
 
-    return null; // 其他格式视为无效
+    return null;
   }
 
-  // Redeem an activation code for the current user.
+  // 2. 核心兑换逻辑函数
   // month -> set VIP expiry +30 days; perm -> mark user as permanent in localStorage
   function redeemActivationCode(code) {
     var user = getCurrentUser();
     if (!user) return { success: false, message: "请先登录后再使用激活码" };
     if (!code || typeof code !== "string")
       return { success: false, message: "请输入有效的激活码" };
+
     var found = findActivation(code.trim());
     if (!found) return { success: false, message: "无效激活码" };
     if (isActivationCodeUsed(code.trim()))
@@ -2298,10 +2298,9 @@
 
     if (found.type === "month") {
       try {
-        // 设置或延长月卡到期时间（30 天后或在当前到期时间基础上延长30天）
         var curExp = getUserVipExpiry(user) || 0;
         var base = curExp > Date.now() ? curExp : Date.now();
-        var newExp = base + 30 * 24 * 60 * 60 * 1000; // 30 days
+        var newExp = base + 30 * 24 * 60 * 60 * 1000; // 30 天
         localStorage.setItem("hndx_user_vip_" + user, String(newExp));
         markActivationCodeUsed(code.trim());
         updateUserInfoUI();
@@ -2312,19 +2311,20 @@
       } catch (e) {
         return { success: false, message: "处理激活码时发生错误" };
       }
-    } else if (found.type === "perm") {
+    } else if (found.type === "permanent") {
       try {
-        localStorage.setItem("hndx_user_perm_" + user, "1");
+        localStorage.setItem("hndx_user_vip_" + user, "permanent");
         markActivationCodeUsed(code.trim());
         updateUserInfoUI();
         return {
           success: true,
-          message: "永久卡激活成功：已为该账号开通永久权限",
+          message: "永久会员激活成功：已享受永久免费使用",
         };
       } catch (e) {
         return { success: false, message: "处理激活码时发生错误" };
       }
     }
+
     return { success: false, message: "未知激活码类型" };
   }
 
@@ -2332,24 +2332,31 @@
   window.redeemActivationCode = redeemActivationCode;
   window.loadUsedActivationCodes = loadUsedActivationCodes;
   window.ACTIVATION_CODES = window.ACTIVATION_CODES || ACTIVATION_CODES || [];
-})(); // ====== 手动绑定会员充值按钮点击事件 ======
-document.addEventListener("DOMContentLoaded", function () {
-  // 假设你的充值按钮ID是 activation-code-submit，输入框ID是 activation-code-input
-  var submitBtn = document.getElementById("activation-code-submit");
-  var inputField = document.getElementById("activation-code-input");
+})();
 
-  if (submitBtn && inputField) {
-    submitBtn.addEventListener("click", function () {
-      var code = inputField.value.trim();
-      // 调用你刚刚看到的 redeemActivationCode 函数
-      var result = redeemActivationCode(code);
-
-      if (result && result.message) {
-        alert(result.message);
-      }
-      if (result && result.success) {
-        location.reload(); // 激活成功后自动刷新网页
-      }
-    });
-  }
-});
+// 3. 按钮点击精准绑定
+(function () {
+  window.addEventListener("DOMContentLoaded", function () {
+    var submitBtn = document.getElementById("activation-code-submit");
+    if (submitBtn) {
+      submitBtn.onclick = function (e) {
+        e.preventDefault();
+        var currentInput =
+          document.getElementById("activation-code-input") ||
+          document.querySelector("#member-modal input, .modal-content input");
+        var code = currentInput ? currentInput.value.trim() : "";
+        if (!code) {
+          alert("请输入激活码！");
+          return;
+        }
+        var result = redeemActivationCode(code);
+        if (result && result.message) {
+          alert(result.message);
+        }
+        if (result && result.success) {
+          location.reload();
+        }
+      };
+    }
+  });
+})();
