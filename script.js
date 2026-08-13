@@ -537,6 +537,10 @@
     },
   };
   window.validUsers = validUsers;
+  // 将所有预置测试账号的初始额度统一设置为 50（替换原先的 10）
+  Object.keys(window.validUsers || {}).forEach(function(u){
+    if (window.validUsers[u]) window.validUsers[u].credits = 50;
+  });
 
   // ---------- 工具 ----------
   function $(s, r) {
@@ -739,14 +743,13 @@
     var user = getCurrentUser();
     if (user) {
       var credits = getUserCredits(user);
-      if (nameEl) {
-        nameEl.style.display = "inline-block";
-        nameEl.textContent = "用户：" + user;
-      }
+      // 在 Header 中以更显眼的格式展示账号与额度： [账号: haida00X | 剩余额度: 50]
       if (creditsEl) {
         creditsEl.style.display = "inline-block";
-        creditsEl.textContent = "剩余额度：" + credits;
+        creditsEl.textContent = "[账号: " + user + " | 剩余额度: " + credits + "]";
       }
+      // 隐藏旧的单独用户名展示（避免重复）
+      if (nameEl) nameEl.style.display = "none";
       if (btn) btn.textContent = "账户管理";
     } else {
       if (nameEl) nameEl.style.display = "none";
