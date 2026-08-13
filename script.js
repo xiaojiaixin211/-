@@ -739,6 +739,22 @@
     updateUserInfoUI();
   }
 
+  // ---------- 会员状态工具 ----------
+  function isUserPermanent(username) {
+    if (!username) return false;
+    return localStorage.getItem('hndx_user_perm_' + username) === '1';
+  }
+  function getUserVipExpiry(username) {
+    if (!username) return 0;
+    return Number(localStorage.getItem('hndx_user_vip_' + username) || 0);
+  }
+  function isUserVipValid(username) {
+    if (!username) return false;
+    if (isUserPermanent(username)) return true;
+    var exp = getUserVipExpiry(username);
+    return Number(exp) > Date.now();
+  }
+
   function updateUserInfoUI() {
     var nameEl = $("#user-name");
     var creditsEl = $("#user-credits");
@@ -749,7 +765,28 @@
       // 在 Header 中以更显眼的格式展示账号与额度： [账号: haida00X | 剩余额度: 50]
       if (creditsEl) {
         creditsEl.style.display = "inline-block";
-        creditsEl.textContent = "[账号: " + user + " | 剩余额度: " + credits + "]";
+        var memberText = "";
+        if (isUserPermanent(user)) {
+          memberText = " | 会员: 永久";
+        } else if (isUserVipValid(user)) {
+          var exp = getUserVipExpiry(user);
+          var days = Math.max(0, Math.ceil((exp - Date.now()) / (1000 * 60 * 60 * 24)));
+          memberText = " | 会员: 月卡(" + days + " 天)";
+        }
+        creditsEl.textContent = "[账号: " + user + " | 剩余额度: " + credits + "]" + memberText;
+      }
+      // 在会员弹窗内显示详细会员状态（如果弹窗存在）
+      var ms = $("#member-status");
+      if (ms) {
+        if (isUserPermanent(user)) {
+          ms.textContent = user + "（永久会员）";
+        } else if (isUserVipValid(user)) {
+          var exp = getUserVipExpiry(user);
+          var d = new Date(exp);
+          ms.textContent = user + "（月卡， 到期: " + d.toLocaleString() + "）";
+        } else {
+          ms.textContent = user + "（非会员）";
+        }
       }
       // 隐藏旧的单独用户名展示（避免重复）
       if (nameEl) nameEl.style.display = "none";
@@ -758,6 +795,7 @@
       if (nameEl) nameEl.style.display = "none";
       if (creditsEl) creditsEl.style.display = "none";
       if (btn) btn.textContent = "登录 / 注册";
+      var ms = $("#member-status"); if (ms) ms.textContent = '未登录';
     }
   }
 
@@ -2186,7 +2224,7 @@
   function findActivation(code) { if (!window.ACTIVATION_CODES) return null; return window.ACTIVATION_CODES.find(function (c) { return c.code === code; }) || null; }
 
   // Redeem an activation code for the current user.
-  // month -> +30 credits; perm -> mark user as permanent in localStorage
+  // month -> set VIP expiry +30 days; perm -> mark user as permanent in localStorage
   function redeemActivationCode(code) {
     var user = getCurrentUser();
     if (!user) return { success: false, message: '请先登录后再使用激活码' };
@@ -2197,11 +2235,14 @@
 
     if (found.type === 'month') {
       try {
-        var cur = Number(getUserCredits(user)) || 0;
-        setUserCredits(user, cur + 30);
+        // 设置或延长月卡到期时间（30 天后或在当前到期时间基础上延长30天）
+        var curExp = getUserVipExpiry(user) || 0;
+        var base = curExp > Date.now() ? curExp : Date.now();
+        var newExp = base + 30 * 24 * 60 * 60 * 1000; // 30 days
+        localStorage.setItem('hndx_user_vip_' + user, String(newExp));
         markActivationCodeUsed(code.trim());
         updateUserInfoUI();
-        return { success: true, message: '月卡激活成功：已增加 30 次额度' };
+        return { success: true, message: '月卡激活成功：已开通/延长 30 天会员' };
       } catch (e) {
         return { success: false, message: '处理激活码时发生错误' };
       }

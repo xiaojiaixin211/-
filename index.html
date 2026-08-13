@@ -164,6 +164,31 @@
       💬 联系作者 / 交流群
     </div>
 
+    <!-- 悬浮会员中心按钮 -->
+    <div
+      id="member-btn"
+      onclick="document.getElementById('member-modal').style.display = 'flex'"
+      style="
+        position: fixed;
+        bottom: 140px;
+        right: 20px;
+        background: #28a745;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 25px;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        z-index: 999;
+        font-size: 14px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      "
+    >
+      🏷️ 会员中心 / 充值
+    </div>
+
     <!-- 弹窗内容：联系方式 -->
     <div
       id="contact-modal"
@@ -240,6 +265,80 @@
         <p style="margin: 6px 0 0; color: #888; font-size: 12px">
           （欢迎加好友交流答疑、题目报错反馈）
         </p>
+      </div>
+    </div>
+
+    <!-- 会员中心弹窗 -->
+    <div
+      id="member-modal"
+      onclick="if (event.target === this) this.style.display = 'none';"
+      style="
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 1010;
+        justify-content: center;
+        align-items: center;
+      "
+    >
+      <div
+        style="
+          background: #fff;
+          padding: 18px;
+          border-radius: 12px;
+          max-width: 560px;
+          width: 92%;
+          box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+          display: flex;
+          gap: 16px;
+          align-items: flex-start;
+        "
+      >
+        <div style="flex:1;">
+          <h3 style="margin:0 0 8px;">会员中心与充值</h3>
+          <p style="margin:0 0 12px; color:#444;">请选择套餐并扫码支付。支付后请截图联系作者获取兑换码并在下方输入激活。</p>
+
+          <div style="display:flex; gap:10px; margin-bottom:12px;">
+            <div style="flex:1; border:1px solid #eee; padding:10px; border-radius:8px;">
+              <div style="font-weight:700; font-size:16px;">套餐一 · 月卡</div>
+              <div style="color:#666; margin-top:6px;"><strong>9.9 元 / 月</strong> · 无限次 AI 批改（有效期 30 天）</div>
+            </div>
+            <div style="flex:1; border:1px solid #eee; padding:10px; border-radius:8px;">
+              <div style="font-weight:700; font-size:16px;">套餐二 · 永久</div>
+              <div style="color:#666; margin-top:6px;"><strong>49.9 元 / 永久</strong> · 永久无限次 AI 批改</div>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px;">
+            <img src="wechat_pay.png" alt="微信收款码" style="width:140px; height:140px; object-fit:contain; border-radius:8px; border:1px solid #eee;" />
+            <div style="flex:1; color:#333; font-size:14px;">
+              <div style="font-weight:700; margin-bottom:6px;">微信扫码支付</div>
+              <div style="color:#666;">扫码支付后，请截图并联系作者获取专属兑换码。输入兑换码后点击“立即激活/充值”。</div>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:8px; align-items:center;">
+            <input id="activation-code-input" type="text" placeholder="输入兑换码（例如 MONTH-XXXXXX / PERM-XXXXXX）" style="flex:1; padding:8px; border:1px solid #ddd; border-radius:6px;" />
+            <button id="activation-code-submit" style="background:#ff8c00; color:#fff; border:none; padding:9px 12px; border-radius:6px; font-weight:700; cursor:pointer;">立即激活/充值</button>
+          </div>
+
+          <div id="member-feedback" style="margin-top:8px; color:#28a745; font-weight:600; display:none;"></div>
+        </div>
+
+        <div style="width:220px; text-align:left;">
+          <h4 style="margin-top:0;">注意事项</h4>
+          <ul style="padding-left:18px; color:#666;">
+            <li>激活码仅通过作者分发，请勿相信第三方非官方渠道。</li>
+            <li>月卡到期后将失去会员资格，可重复兑换新的月卡激活码。</li>
+            <li>永久卡一经激活绑定账号，不可转移。</li>
+          </ul>
+          <div style="margin-top:12px; font-size:13px; color:#444;"><strong>当前会员状态：</strong> <span id="member-status">未登录</span></div>
+        </div>
+
       </div>
     </div>
 
