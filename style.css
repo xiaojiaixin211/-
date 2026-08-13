@@ -49,10 +49,41 @@ button {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: saturate(180%) blur(8px);
-  border-bottom: 1px solid var(--border);
+  /* 更改为醒目的深色背景 */
+  background: #000000;
+  /* 保留轻微分隔线，白色半透明以在暗色背景下柔和呈现 */
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
+
+/* 导航在深色背景下的文字样式 */
+.header .brand { color: #fff; }
+.header .nav a { color: #fff; }
+.header .nav a:hover { background: rgba(255,255,255,0.06); color: #fff; }
+.header .nav a.active { background: var(--primary); color: #fff; }
+.header .nav-toggle { color: #fff; }
+
+/* 顶部内联登录输入样式：使用白底黑字以确保在深色 Header 上清晰可见。 */
+.header #inline-login input[type="text"],
+.header #inline-login input[type="password"] {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid rgba(0,0,0,0.12) !important;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.header #inline-login input::placeholder {
+  color: #6b7a8d !important; /* 可见的灰色占位符 */
+  opacity: 1;
+}
+
+/* 登录按钮在深色 Header 上保持可见 */
+.header #login-inline-submit { color: #111; }
+
+/* 登录/注册 按钮（右侧）在深色背景下也使用白色文字 */
+.header #login-open-btn { color: #fff; background: rgba(255,255,255,0.04); }
+
 .header-inner {
   max-width: 1000px;
   margin: 0 auto;
