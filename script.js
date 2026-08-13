@@ -1055,279 +1055,279 @@
   if (document.readyState === "loading")
     document.addEventListener("DOMContentLoaded", init);
   else init();
-})();
-async function submitForAIGrade(qIndex) {
-  var question =
-    window.currentPaperList && window.currentPaperList[qIndex]
-      ? window.currentPaperList[qIndex]
-      : null;
 
-  var inputEl = document.getElementById("answer-input-" + qIndex);
-  var resultBox = document.getElementById("ai-result-" + qIndex);
-  var submitBtn = document.getElementById("btn-submit-" + qIndex);
+  async function submitForAIGrade(qIndex) {
+    var question =
+      window.currentPaperList && window.currentPaperList[qIndex]
+        ? window.currentPaperList[qIndex]
+        : null;
 
-  if (!inputEl || !inputEl.value.trim()) {
-    alert("请先输入你的答案再提交打分哦！");
-    return;
-  }
+    var inputEl = document.getElementById("answer-input-" + qIndex);
+    var resultBox = document.getElementById("ai-result-" + qIndex);
+    var submitBtn = document.getElementById("btn-submit-" + qIndex);
 
-  var userAnswer = inputEl.value.trim();
-  submitBtn.disabled = true;
-  submitBtn.innerText = "⏳ 阅卷老师打分中...";
-  resultBox.style.display = "block";
-  resultBox.innerHTML =
-    "<p style='color: #666; margin: 0;'>AI 正在对照采分点分析您的回答...</p>";
-
-  try {
-    var WORKER_URL = "https://haida-ai-grader.xiaojiaixin211.workers.dev/";
-
-    var response = await fetch(WORKER_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title: question ? question.title : "考研主观题",
-        analysis: question ? question.analysis || question.answer || "" : "",
-        max_score: question ? question.max_score || 10 : 10,
-        user_answer: userAnswer,
-      }),
-    });
-
-    var data = await response.json();
-
-    if (data.error) {
-      resultBox.innerHTML =
-        "<p style='color: #dc3545; margin: 0;'>" + data.error + "</p>";
-    } else {
-      var hitHtml =
-        data.hit_points && data.hit_points.length > 0
-          ? data.hit_points.join("；")
-          : "无明显命中";
-      var missHtml =
-        data.miss_points && data.miss_points.length > 0
-          ? data.miss_points.join("；")
-          : "无遗漏";
-
-      resultBox.innerHTML =
-        '<div style="font-size: 16px; font-weight: bold; color: #28a745; margin-bottom: 8px;">🎯 得分：' +
-        data.score +
-        " / " +
-        data.max_score +
-        " 分</div>" +
-        '<div style="margin-bottom: 6px; font-size: 13px; color: #212529;"><strong>✅ 命中得分点：</strong> ' +
-        hitHtml +
-        "</div>" +
-        '<div style="margin-bottom: 6px; font-size: 13px; color: #dc3545;"><strong>❌ 遗漏/错误采分点：</strong> ' +
-        missHtml +
-        "</div>" +
-        '<div style="background: #ffffff; padding: 8px 10px; border-radius: 4px; font-size: 13px; color: #495057; border: 1px solid #e9ecef; margin-top: 6px;"><strong>💡 阅卷点评：</strong>' +
-        data.feedback +
-        "</div>";
+    if (!inputEl || !inputEl.value.trim()) {
+      alert("请先输入你的答案再提交打分哦！");
+      return;
     }
-  } catch (err) {
+
+    var userAnswer = inputEl.value.trim();
+    submitBtn.disabled = true;
+    submitBtn.innerText = "⏳ 阅卷老师打分中...";
+    resultBox.style.display = "block";
     resultBox.innerHTML =
-      "<p style='color: #dc3545; margin: 0;'>网络请求失败，请稍后再试。</p>";
-  } finally {
-    submitBtn.disabled = false;
-    submitBtn.innerText = "🤖 AI 智能批改打分";
-  }
-}
+      "<p style='color: #666; margin: 0;'>AI 正在对照采分点分析您的回答...</p>";
 
-// 确保网页按钮能全局调用到打分函数
-window.submitForAIGrade = submitForAIGrade;
-// ====== 新增：搜索功能相关逻辑 ======
-let allQuestions = []; // 存储所有题目数据
+    try {
+      var WORKER_URL = "https://haida-ai-grader.xiaojiaixin211.workers.dev/";
 
-// 1. 尝试从本地或通过 fetch 加载 questions.json 数据
-// （如果您的项目中已经有了加载 questions.json 的代码，可以复用原有的变量，只需确保全局能访问到题目数据即可）
-fetch("questions.json")
-  .then((response) => response.json())
-  .then((data) => {
-    allQuestions = data;
-    console.log(`题目数据加载成功，共 ${allQuestions.length} 题`);
-  })
-  .catch((error) => console.error("加载 questions.json 失败:", error));
+      var response = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: question ? question.title : "考研主观题",
+          analysis: question ? question.analysis || question.answer || "" : "",
+          max_score: question ? question.max_score || 10 : 10,
+          user_answer: userAnswer,
+        }),
+      });
 
-// 2. 搜索过滤与跳转函数
-// 2. 搜索过滤与跳转函数
-function filterQuestions() {
-  const keyword = document
-    .getElementById("searchInput")
-    .value.trim()
-    .toLowerCase();
-  const resultsList = document.getElementById("resultsList");
+      var data = await response.json();
 
-  // 清空上一次的搜索结果
-  resultsList.innerHTML = "";
+      if (data.error) {
+        resultBox.innerHTML =
+          "<p style='color: #dc3545; margin: 0;'>" + data.error + "</p>";
+      } else {
+        var hitHtml =
+          data.hit_points && data.hit_points.length > 0
+            ? data.hit_points.join("；")
+            : "无明显命中";
+        var missHtml =
+          data.miss_points && data.miss_points.length > 0
+            ? data.miss_points.join("；")
+            : "无遗漏";
 
-  // 如果输入框空了，直接返回
-  if (!keyword) return;
-
-  // 筛选匹配的题目（支持标题 title 或标签 tags 模糊匹配）
-  const filtered = allQuestions.filter((q) => {
-    const matchTitle = q.title && q.title.toLowerCase().includes(keyword);
-    const matchTags =
-      q.tags && q.tags.some((tag) => tag.toLowerCase().includes(keyword));
-    return matchTitle || matchTags;
-  });
-
-  // 如果没有找到匹配项
-  if (filtered.length === 0) {
-    resultsList.innerHTML =
-      '<div style="padding: 10px; color: #888;">未找到相关题目</div>';
-    return;
-  }
-
-  // 渲染搜索结果列表
-  filtered.forEach((q) => {
-    const item = document.createElement("div");
-    item.className = "search-result-item";
-    item.style.padding = "8px 12px";
-    item.style.cursor = "pointer";
-    item.style.borderBottom = "1px solid #eee";
-    item.innerHTML = `<strong>${q.title}</strong> <span style="color:#666; font-size:12px;">[${q.subject || "未分类"}]</span>`;
-
-    // 点击后跳转并定位到对应分类和题目
-    item.onclick = () => {
-      // 1. 切换到“分类刷题”大类视图
-      const categoryNavBtn = document.querySelector('[data-target="category"]');
-      if (categoryNavBtn) {
-        categoryNavBtn.click();
+        resultBox.innerHTML =
+          '<div style="font-size: 16px; font-weight: bold; color: #28a745; margin-bottom: 8px;">🎯 得分：' +
+          data.score +
+          " / " +
+          data.max_score +
+          " 分</div>" +
+          '<div style="margin-bottom: 6px; font-size: 13px; color: #212529;"><strong>✅ 命中得分点：</strong> ' +
+          hitHtml +
+          "</div>" +
+          '<div style="margin-bottom: 6px; font-size: 13px; color: #dc3545;"><strong>❌ 遗漏/错误采分点：</strong> ' +
+          missHtml +
+          "</div>" +
+          '<div style="background: #ffffff; padding: 8px 10px; border-radius: 4px; font-size: 13px; color: #495057; border: 1px solid #e9ecef; margin-top: 6px;"><strong>💡 阅卷点评：</strong>' +
+          data.feedback +
+          "</div>";
       }
-
-      // 2. 延迟 200ms 等大类视图渲染后，精确寻找并点击对应的科目标签（如“现代文学”）
-      setTimeout(() => {
-        const subjectName = q.subject; // 获取当前题目的科目（例如“现代文学”）
-        if (subjectName) {
-          // 查找页面上所有可能的按钮或可点击标签
-          const allButtons = document.querySelectorAll(
-            "button, .subject-btn, .tag, a",
-          );
-          let clicked = false;
-          allButtons.forEach((el) => {
-            const text = el.textContent ? el.textContent.trim() : "";
-            // 如果该元素的文字包含了科目名称，且文字长度较短（避免误伤大段文章）
-            if (!clicked && text.includes(subjectName) && text.length < 15) {
-              el.click();
-              clicked = true;
-            }
-          });
-        }
-      }, 200);
-
-      // 3. 延迟 600ms 后启动滚动定位，确保题目卡片已完全加载
-      setTimeout(() => {
-        const targetElement =
-          document.getElementById(`question-${q.id}`) ||
-          document.getElementById(q.id) ||
-          document.querySelector(`[data-id="${q.id}"]`) ||
-          Array.from(
-            document.querySelectorAll("div, section, article, li"),
-          ).find(
-            (el) =>
-              el.textContent &&
-              el.textContent.includes(q.title) &&
-              el.textContent.length < 500,
-          );
-
-        if (targetElement) {
-          targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
-          targetElement.style.transition = "background-color 0.5s ease";
-          targetElement.style.backgroundColor = "#fff3cd"; // 浅黄高亮
-          setTimeout(() => {
-            targetElement.style.backgroundColor = "";
-          }, 2000);
-        }
-      }, 600);
-
-      // 4. 清空搜索框和结果下拉菜单
-      const searchInput = document.getElementById("searchInput");
-      const resultsList = document.getElementById("resultsList");
-      if (searchInput) searchInput.value = "";
-      if (resultsList) resultsList.innerHTML = "";
-    };
-    resultsList.appendChild(item);
-  });
-}
-async function handleCardAIGrade(btn) {
-  var card = btn.closest(".q-card");
-  if (!card) return;
-  var uid = card.dataset.uid;
-  var q = null;
-  for (var i = 0; i < state.all.length; i++) {
-    if (state.all[i].uid === uid) {
-      q = state.all[i];
-      break;
+    } catch (err) {
+      resultBox.innerHTML =
+        "<p style='color: #dc3545; margin: 0;'>网络请求失败，请稍后再试。</p>";
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerText = "🤖 AI 智能批改打分";
     }
   }
-  if (!q) return;
 
-  var inputEl = card.querySelector(".card-answer-input");
-  var resultBox = card.querySelector(".card-ai-result");
-  var submitBtn = btn;
+  window.submitForAIGrade = submitForAIGrade;
 
-  if (!inputEl || !inputEl.value.trim()) {
-    alert("请先输入你的答案再提交打分哦！");
-    return;
-  }
+  var allQuestions = [];
 
-  var userAnswer = inputEl.value.trim();
-  submitBtn.disabled = true;
-  submitBtn.innerText = "⏳ 阅卷老师打分中...";
-  resultBox.style.display = "block";
-  resultBox.innerHTML =
-    "<p style='color: #666; margin: 0;'>AI 正在对照采分点分析您的回答...</p>";
-
-  try {
-    var WORKER_URL = "https://haida-ai-grader.xiaojiaixin211.workers.dev/";
-
-    var response = await fetch(WORKER_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title: q.title,
-        analysis: q.analysis || "",
-        max_score: 10,
-        user_answer: userAnswer,
-      }),
+  fetch("questions.json")
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      allQuestions = data;
+      console.log("题目数据加载成功，共 " + allQuestions.length + " 题");
+    })
+    .catch(function (error) {
+      console.error("加载 questions.json 失败:", error);
     });
 
-    var data = await response.json();
+  function filterQuestions() {
+    var searchInput = document.getElementById("searchInput");
+    var resultsList = document.getElementById("resultsList");
+    if (!searchInput || !resultsList) return;
 
-    if (data.error) {
-      resultBox.innerHTML =
-        "<p style='color: #dc3545; margin: 0;'>" + data.error + "</p>";
-    } else {
-      var hitHtml =
-        data.hit_points && data.hit_points.length > 0
-          ? data.hit_points.join("；")
-          : "无明显命中";
-      var missHtml =
-        data.miss_points && data.miss_points.length > 0
-          ? data.miss_points.join("；")
-          : "无遗漏";
+    var keyword = searchInput.value.trim().toLowerCase();
+    resultsList.innerHTML = "";
+    if (!keyword) return;
 
-      resultBox.innerHTML =
-        '<div style="font-size: 16px; font-weight: bold; color: #28a745; margin-bottom: 8px;">🎯 得分：' +
-        data.score +
-        " / " +
-        data.max_score +
-        " 分</div>" +
-        '<div style="margin-bottom: 6px; font-size: 13px; color: #212529;"><strong>✅ 命中得分点：</strong> ' +
-        hitHtml +
-        "</div>" +
-        '<div style="margin-bottom: 6px; font-size: 13px; color: #dc3545;"><strong>❌ 遗漏/错误采分点：</strong> ' +
-        missHtml +
-        "</div>" +
-        '<div style="background: #ffffff; padding: 8px 10px; border-radius: 4px; font-size: 13px; color: #495057; border: 1px solid #e9ecef; margin-top: 6px;"><strong>💡 阅卷点评：</strong>' +
-        data.feedback +
-        "</div>";
+    var filtered = allQuestions.filter(function (q) {
+      var matchTitle = q.title && q.title.toLowerCase().includes(keyword);
+      var matchTags =
+        q.tags &&
+        q.tags.some(function (tag) {
+          return tag.toLowerCase().includes(keyword);
+        });
+      return matchTitle || matchTags;
+    });
+
+    if (filtered.length === 0) {
+      resultsList.innerHTML =
+        '<div style="padding: 10px; color: #888;">未找到相关题目</div>';
+      return;
     }
-  } catch (err) {
-    resultBox.innerHTML =
-      "<p style='color: #dc3545; margin: 0;'>网络请求失败，请稍后再试。</p>";
-  } finally {
-    submitBtn.disabled = false;
-    submitBtn.innerText = "🤖 AI 智能批改打分";
+
+    filtered.forEach(function (q) {
+      var item = document.createElement("div");
+      item.className = "search-result-item";
+      item.style.padding = "8px 12px";
+      item.style.cursor = "pointer";
+      item.style.borderBottom = "1px solid #eee";
+      item.innerHTML =
+        "<strong>" +
+        q.title +
+        '</strong> <span style="color:#666; font-size:12px;">[' +
+        (q.subject || "未分类") +
+        "]</span>";
+
+      item.onclick = function () {
+        var categoryNavBtn = document.querySelector('[data-target="category"]');
+        if (categoryNavBtn) categoryNavBtn.click();
+
+        setTimeout(function () {
+          var subjectName = q.subject;
+          if (subjectName) {
+            var allButtons = document.querySelectorAll(
+              "button, .subject-btn, .tag, a",
+            );
+            var clicked = false;
+            allButtons.forEach(function (el) {
+              var text = el.textContent ? el.textContent.trim() : "";
+              if (!clicked && text.includes(subjectName) && text.length < 15) {
+                el.click();
+                clicked = true;
+              }
+            });
+          }
+        }, 200);
+
+        setTimeout(function () {
+          var targetElement =
+            document.getElementById("question-" + q.id) ||
+            document.getElementById(q.id) ||
+            document.querySelector('[data-id="' + q.id + '"]') ||
+            Array.from(
+              document.querySelectorAll("div, section, article, li"),
+            ).find(function (el) {
+              return (
+                el.textContent &&
+                el.textContent.includes(q.title) &&
+                el.textContent.length < 500
+              );
+            });
+
+          if (targetElement) {
+            targetElement.scrollIntoView({
+              behavior: "smooth",
+              block: "center",
+            });
+            targetElement.style.transition = "background-color 0.5s ease";
+            targetElement.style.backgroundColor = "#fff3cd";
+            setTimeout(function () {
+              targetElement.style.backgroundColor = "";
+            }, 2000);
+          }
+        }, 600);
+
+        var searchInputAgain = document.getElementById("searchInput");
+        var resultsListAgain = document.getElementById("resultsList");
+        if (searchInputAgain) searchInputAgain.value = "";
+        if (resultsListAgain) resultsListAgain.innerHTML = "";
+      };
+      resultsList.appendChild(item);
+    });
   }
-}
-window.handleCardAIGrade = handleCardAIGrade;
+
+  window.filterQuestions = filterQuestions;
+
+  async function handleCardAIGrade(btn) {
+    var card = btn.closest(".q-card");
+    if (!card) return;
+    var uid = card.dataset.uid;
+    var q = null;
+    for (var i = 0; i < state.all.length; i++) {
+      if (state.all[i].uid === uid) {
+        q = state.all[i];
+        break;
+      }
+    }
+    if (!q) return;
+
+    var inputEl = card.querySelector(".card-answer-input");
+    var resultBox = card.querySelector(".card-ai-result");
+    var submitBtn = btn;
+
+    if (!inputEl || !inputEl.value.trim()) {
+      alert("请先输入你的答案再提交打分哦！");
+      return;
+    }
+
+    var userAnswer = inputEl.value.trim();
+    submitBtn.disabled = true;
+    submitBtn.innerText = "⏳ 阅卷老师打分中...";
+    resultBox.style.display = "block";
+    resultBox.innerHTML =
+      "<p style='color: #666; margin: 0;'>AI 正在对照采分点分析您的回答...</p>";
+
+    try {
+      var WORKER_URL = "https://haida-ai-grader.xiaojiaixin211.workers.dev/";
+
+      var response = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: q.title,
+          analysis: q.analysis || "",
+          max_score: 10,
+          user_answer: userAnswer,
+        }),
+      });
+
+      var data = await response.json();
+
+      if (data.error) {
+        resultBox.innerHTML =
+          "<p style='color: #dc3545; margin: 0;'>" + data.error + "</p>";
+      } else {
+        var hitHtml =
+          data.hit_points && data.hit_points.length > 0
+            ? data.hit_points.join("；")
+            : "无明显命中";
+        var missHtml =
+          data.miss_points && data.miss_points.length > 0
+            ? data.miss_points.join("；")
+            : "无遗漏";
+
+        resultBox.innerHTML =
+          '<div style="font-size: 16px; font-weight: bold; color: #28a745; margin-bottom: 8px;">🎯 得分：' +
+          data.score +
+          " / " +
+          data.max_score +
+          " 分</div>" +
+          '<div style="margin-bottom: 6px; font-size: 13px; color: #212529;"><strong>✅ 命中得分点：</strong> ' +
+          hitHtml +
+          "</div>" +
+          '<div style="margin-bottom: 6px; font-size: 13px; color: #dc3545;"><strong>❌ 遗漏/错误采分点：</strong> ' +
+          missHtml +
+          "</div>" +
+          '<div style="background: #ffffff; padding: 8px 10px; border-radius: 4px; font-size: 13px; color: #495057; border: 1px solid #e9ecef; margin-top: 6px;"><strong>💡 阅卷点评：</strong>' +
+          data.feedback +
+          "</div>";
+      }
+    } catch (err) {
+      resultBox.innerHTML =
+        "<p style='color: #dc3545; margin: 0;'>网络请求失败，请稍后再试。</p>";
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerText = "🤖 AI 智能批改打分";
+    }
+  }
+
+  window.handleCardAIGrade = handleCardAIGrade;
+})();
