@@ -915,8 +915,23 @@
     }
 
     // 统一 click 委托
+    // 统一 click 委托
     document.addEventListener("click", function (e) {
-      var t = e.target;
+      var t = e.target; // 变量 t 在最顶部定义一次
+
+      // 1. 优先检查卡片操作（包括 AI 批改、显示答案、错题、收藏）
+      var actBtn = t.closest("[data-action]");
+      if (actBtn) {
+        var action = actBtn.dataset.action;
+        if (action === "card-ai-grade") {
+          handleCardAIGrade(actBtn);
+          return;
+        }
+        handleCardAction(actBtn);
+        return;
+      }
+
+      // 2. 侧边栏与页面导航
       if (t.closest(".nav-toggle")) {
         $(".nav").classList.toggle("open");
         return;
@@ -951,19 +966,11 @@
         return;
       }
 
-      if (actBtn) {
-        handleCardAction(actBtn);
-        return;
-      }
-
-      var actBtn = t.closest("[data-action]");
-      if (actBtn) {
-        var action = actBtn.dataset.action;
-        if (action === "card-ai-grade") {
-          handleCardAIGrade(actBtn);
-          return;
-        }
-        handleCardAction(actBtn);
+      // 3. 套卷模式与翻页
+      var mb = t.closest("[data-mode]");
+      if (mb) {
+        state.paperMode = mb.dataset.mode;
+        renderPapers();
         return;
       }
       var pa = t.closest("[data-act]");
@@ -972,6 +979,7 @@
         return;
       }
 
+      // 4. 分类刷题筛选
       var fs = t.closest("[data-filter-subject]");
       if (fs) {
         state.catSubject = fs.dataset.filterSubject;
@@ -1000,8 +1008,6 @@
       }
     });
   }
-  var actBtn = t.closest("[data-action]");
-
   // ---------- 加载失败提示 ----------
   function showLoadBanner() {
     var b = $("#load-banner");
