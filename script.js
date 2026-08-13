@@ -767,6 +767,11 @@
     var accountInput = $("#login-account");
     var pwdInput = $("#login-password");
 
+    // Inline (visible) login controls
+    var inlineAccount = $("#login-inline-account");
+    var inlinePwd = $("#login-inline-password");
+    var inlineSubmit = $("#login-inline-submit");
+
     if (openBtn && modal) {
       openBtn.addEventListener("click", function () {
         modal.style.display = "flex";
@@ -781,9 +786,16 @@
       if (user) {
         if (logoutBtn) logoutBtn.style.display = "inline-block";
         if (submitBtn) submitBtn.style.display = "none";
+        // reflect inline inputs (optional)
+        if (inlineAccount) inlineAccount.style.display = "none";
+        if (inlinePwd) inlinePwd.style.display = "none";
+        if (inlineSubmit) inlineSubmit.style.display = "none";
       } else {
         if (logoutBtn) logoutBtn.style.display = "none";
         if (submitBtn) submitBtn.style.display = "inline-block";
+        if (inlineAccount) inlineAccount.style.display = "inline-block";
+        if (inlinePwd) inlinePwd.style.display = "inline-block";
+        if (inlineSubmit) inlineSubmit.style.display = "inline-block";
       }
     }
 
@@ -821,6 +833,22 @@
         updateLoginModalButtons();
         var modalEl = $("#login-modal");
         if (modalEl) modalEl.style.display = "none";
+      });
+    }
+
+    // Wire inline visible login: copy values into modal inputs and reuse submit handler
+    if (inlineSubmit) {
+      inlineSubmit.addEventListener("click", function () {
+        var acc = inlineAccount ? inlineAccount.value.trim() : "";
+        var pwd = inlinePwd ? inlinePwd.value : "";
+        if (!acc || !pwd) {
+          alert("请填写账号与密码");
+          return;
+        }
+        if (accountInput) accountInput.value = acc;
+        if (pwdInput) pwdInput.value = pwd;
+        // trigger the modal submit handler (if present)
+        if (submitBtn) submitBtn.click();
       });
     }
 

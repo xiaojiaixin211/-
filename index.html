@@ -51,6 +51,17 @@
             登录 / 注册
           </button>
         </div>
+
+        <!-- Inline visible login block (显眼位置) -->
+        <div id="inline-login" style="margin-left:12px; display:flex; align-items:center; gap:8px;">
+          <input id="login-inline-account" type="text" placeholder="账号" aria-label="账号" style="padding:6px 8px; border-radius:6px; border:1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.03); color: #fff; font-size:13px;" />
+          <input id="login-inline-password" type="password" placeholder="密码" aria-label="密码" style="padding:6px 8px; border-radius:6px; border:1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.03); color: #fff; font-size:13px;" />
+          <button id="login-inline-submit" style="background:#ffc107; border:none; color:#111; padding:7px 10px; border-radius:8px; cursor:pointer; font-weight:600;">登录</button>
+          <div style="display:flex; align-items:center; gap:8px; color:#fff; font-size:12px;">
+            <img src="wechat.png" alt="微信二维码" style="width:36px; height:36px; object-fit:cover; border-radius:6px; border:1px solid rgba(255,255,255,0.08);" />
+            <span style="white-space:nowrap;">添加开发者微信，领取账号</span>
+          </div>
+        </div>
         <button class="nav-toggle" aria-label="菜单">☰</button>
         <nav class="nav">
           <a data-target="home">首页</a>
