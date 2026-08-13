@@ -14,6 +14,43 @@
     <header class="header">
       <div class="header-inner">
         <div class="brand">海南大学 · 考研真题刷题</div>
+        <div
+          id="user-info"
+          style="
+            margin-left: 18px;
+            margin-right: 8px;
+            color: #fff;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+          "
+        >
+          <span id="user-name" style="display: none"></span>
+          <span
+            id="user-credits"
+            style="
+              display: none;
+              background: rgba(255, 255, 255, 0.08);
+              padding: 6px 8px;
+              border-radius: 12px;
+              font-weight: bold;
+            "
+          ></span>
+          <button
+            id="login-open-btn"
+            style="
+              background: rgba(255, 255, 255, 0.08);
+              border: none;
+              color: #fff;
+              padding: 6px 10px;
+              border-radius: 12px;
+              cursor: pointer;
+            "
+          >
+            登录 / 注册
+          </button>
+        </div>
         <button class="nav-toggle" aria-label="菜单">☰</button>
         <nav class="nav">
           <a data-target="home">首页</a>
@@ -116,7 +153,7 @@
       💬 联系作者 / 交流群
     </div>
 
-    <!-- 弹窗内容 -->
+    <!-- 弹窗内容：联系方式 -->
     <div
       id="contact-modal"
       onclick="if (event.target === this) this.style.display = 'none';"
@@ -192,6 +229,152 @@
         <p style="margin: 6px 0 0; color: #888; font-size: 12px">
           （欢迎加好友交流答疑、题目报错反馈）
         </p>
+      </div>
+    </div>
+
+    <!-- 登录弹窗：账号/密码 + 微信二维码说明 -->
+    <div
+      id="login-modal"
+      onclick="if (event.target === this) this.style.display = 'none';"
+      style="
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      "
+    >
+      <div
+        style="
+          background: white;
+          padding: 20px;
+          border-radius: 12px;
+          max-width: 520px;
+          width: 90%;
+          text-align: left;
+          position: relative;
+          box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+          display: flex;
+          gap: 16px;
+          align-items: flex-start;
+        "
+      >
+        <span
+          onclick="
+            document.getElementById('login-modal').style.display = 'none'
+          "
+          style="
+            position: absolute;
+            right: 14px;
+            top: 10px;
+            font-size: 22px;
+            cursor: pointer;
+            color: #999;
+          "
+          >&times;</span
+        >
+        <div style="flex: 1">
+          <h3 style="margin: 0 0 12px; font-size: 18px; color: #333">
+            用户登录
+          </h3>
+          <div style="margin-bottom: 10px">
+            <label
+              style="
+                display: block;
+                font-size: 13px;
+                color: #555;
+                margin-bottom: 6px;
+              "
+              >账号（示例：haida001）</label
+            >
+            <input
+              id="login-account"
+              type="text"
+              style="
+                width: 100%;
+                padding: 8px;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+              "
+            />
+          </div>
+          <div style="margin-bottom: 12px">
+            <label
+              style="
+                display: block;
+                font-size: 13px;
+                color: #555;
+                margin-bottom: 6px;
+              "
+              >密码</label
+            >
+            <input
+              id="login-password"
+              type="password"
+              style="
+                width: 100%;
+                padding: 8px;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+              "
+            />
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center">
+            <button
+              id="login-submit"
+              style="
+                background: #0056b3;
+                color: #fff;
+                border: none;
+                padding: 10px 14px;
+                border-radius: 6px;
+                cursor: pointer;
+                font-weight: bold;
+              "
+            >
+              登录
+            </button>
+            <button
+              id="login-logout"
+              style="
+                display: none;
+                background: #6c757d;
+                color: #fff;
+                border: none;
+                padding: 10px 14px;
+                border-radius: 6px;
+                cursor: pointer;
+              "
+            >
+              注销
+            </button>
+            <div style="color: #888; font-size: 13px; margin-left: 8px">
+              添加开发者微信，免费领取 haida 专属账号与初始额度
+            </div>
+          </div>
+        </div>
+        <div style="width: 200px; text-align: center">
+          <img
+            src="wechat.png"
+            alt="微信二维码"
+            style="
+              width: 160px;
+              height: 160px;
+              object-fit: contain;
+              border-radius: 8px;
+              display: block;
+              margin: 0 auto 8px;
+            "
+          />
+          <div style="font-size: 13px; color: #444; font-weight: bold">
+            添加开发者微信，免费领取 haida 专属账号与初始额度
+          </div>
+        </div>
       </div>
     </div>
     <script src="script.js"></script>

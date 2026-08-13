@@ -33,6 +33,511 @@
     paperIndex: 0, // 套卷 - 当前题号
   };
 
+  // ---------- 固定测试账号（密码以 SHA-256 哈希形式存储） ----------
+  const validUsers = {
+    haida001: {
+      passwordHash:
+        "690a99440d18d1e8d9b9c93ecf10e0f95eee4a3f17fb80932cf81a29b7cb26b0",
+      credits: 10,
+    },
+    haida002: {
+      passwordHash:
+        "dc6b5bee777e572eee2e595761460ef69f6bcae4d42064b1c7181cc6af6ac476",
+      credits: 10,
+    },
+    haida003: {
+      passwordHash:
+        "069626a638eed455b61dbc126eae3e382cffa02fca4cdc4ed99b714783dfe26c",
+      credits: 10,
+    },
+    haida004: {
+      passwordHash:
+        "63062b5df39c3eb44096cf36bafd6069623c5ecde3ff8a0824ccb6d0df0ccbb0",
+      credits: 10,
+    },
+    haida005: {
+      passwordHash:
+        "f4cb18a1d8b9a44f5e091d748ccb3078ed32ee422ca123aee56eea175e788200",
+      credits: 10,
+    },
+    haida006: {
+      passwordHash:
+        "40f320b8b6011e19a23b270b4f6072b79e3efe1036846db82ca3f68cd13d9d40",
+      credits: 10,
+    },
+    haida007: {
+      passwordHash:
+        "13baf58f1e770231bf5f996143e7480e5c3a2a8cf5d00adb50d7bb9dddc9ec83",
+      credits: 10,
+    },
+    haida008: {
+      passwordHash:
+        "4ab337cd57cdf7011026eb5ff330490517e03cdde70ecdc9bb90a785e3685d88",
+      credits: 10,
+    },
+    haida009: {
+      passwordHash:
+        "6b1f4a0783515f00608a23ca036bce3dafa394bca0a6e2b29c36e77cd25064db",
+      credits: 10,
+    },
+    haida010: {
+      passwordHash:
+        "7343ab9c982e777032ae1d0ee1c58dba30ec9b5390a6f0fb4e1f2143ca054f21",
+      credits: 10,
+    },
+    haida011: {
+      passwordHash:
+        "748e34d912cceee9a72cffd23841b268cd9da41134ce9c7f96475ddf504cd0bd",
+      credits: 10,
+    },
+    haida012: {
+      passwordHash:
+        "f5bbe59064ab0beabb73032bdbae7f64bb8d1cd2fcdfab5f6dd00ac850faa458",
+      credits: 10,
+    },
+    haida013: {
+      passwordHash:
+        "dc8d9e12f4f3eeb8e12065767167559a9c877ca526464195a3ade72de5cebd29",
+      credits: 10,
+    },
+    haida014: {
+      passwordHash:
+        "f73275b6bf0711cdb5e09ba954755157682125a3b2e6489ca4ce859c12d922b7",
+      credits: 10,
+    },
+    haida015: {
+      passwordHash:
+        "d31e4c191ef0f4bfedeb41c8d59d25bbf11684d742ca3e95dda7abbf648daaff",
+      credits: 10,
+    },
+    haida016: {
+      passwordHash:
+        "9084c80b3e9a5e3a147db24e693cf9101ed5c216903ba328adeac2a6893103a8",
+      credits: 10,
+    },
+    haida017: {
+      passwordHash:
+        "6adfbf42616a7a94a0bb7ed4a3839b1edd373fc9ebf6dc7bea02003a15500f17",
+      credits: 10,
+    },
+    haida018: {
+      passwordHash:
+        "df9781b4fa03b3fae8392a706d641b477412d93a760ae599df85a2e98608c9ff",
+      credits: 10,
+    },
+    haida019: {
+      passwordHash:
+        "43db101d459cd6d913b25f6543e87d189156621adcbeb7a59ce34310c4a4548c",
+      credits: 10,
+    },
+    haida020: {
+      passwordHash:
+        "80da0f4b012a6ca2f10a62357355ba75e59a9c3c1d4e349b5742a96375e592b6",
+      credits: 10,
+    },
+    haida021: {
+      passwordHash:
+        "a4733ba60e1ef171ea8350f7d9bef2731a6fa8f815dbe4e234723a04c4002a54",
+      credits: 10,
+    },
+    haida022: {
+      passwordHash:
+        "4261c41130f2d3d5447090f8224c3a0d4833453c90bc383c50b97528e085f3ba",
+      credits: 10,
+    },
+    haida023: {
+      passwordHash:
+        "015db8ecbd956049643b388f838d60f50be55ef515ddc4012a8b040fa3d7206c",
+      credits: 10,
+    },
+    haida024: {
+      passwordHash:
+        "2688f1ebd604e1b678123228f00d51ffd05fa4714c6228424e377d77b9e68d30",
+      credits: 10,
+    },
+    haida025: {
+      passwordHash:
+        "f986d604d985caaa59563a9fd99e87e449e484b3a1b4d72284426b15f7e4fd75",
+      credits: 10,
+    },
+    haida026: {
+      passwordHash:
+        "a60ba54492de8346f646a0119819911ea41309262b5511d3662cd2432072ff80",
+      credits: 10,
+    },
+    haida027: {
+      passwordHash:
+        "91f18497e9af4930464f353c2210f2f9b321a8984349b4a503259c7117bd2b9c",
+      credits: 10,
+    },
+    haida028: {
+      passwordHash:
+        "dd5a77eadb09f9edae319a6d1aef8f77781e0b8b6217e9a3270f1beb8e93b2e7",
+      credits: 10,
+    },
+    haida029: {
+      passwordHash:
+        "6c3dd22fc90bbeb224b2ea964f7991073c6c691ecf53cd9a41c5e5a23758bc43",
+      credits: 10,
+    },
+    haida030: {
+      passwordHash:
+        "fb67f102b9002e8cd49f5e77a71c6d8f2880cef421c5d47726ffa45bdf339226",
+      credits: 10,
+    },
+    haida031: {
+      passwordHash:
+        "187bced82711ea1f0a997d7a98aa9274a8e55bbd6d867444380d8462fa490581",
+      credits: 10,
+    },
+    haida032: {
+      passwordHash:
+        "adb4e7ac42a74870800196d6a8ace5d8aaf27e0a26f83cd6472165a105ad0be6",
+      credits: 10,
+    },
+    haida033: {
+      passwordHash:
+        "91c26865a3da81506069b8db766ba008da15757f69fd7354a8d20df32be60bd9",
+      credits: 10,
+    },
+    haida034: {
+      passwordHash:
+        "fd12780e222bfcf65a5bfb31f28f49e29d8dd36868907f7926bb341065266db6",
+      credits: 10,
+    },
+    haida035: {
+      passwordHash:
+        "6663b842cda3456b89f0548925300b4d03c6e7e8e266aa9d317c76323d48c40d",
+      credits: 10,
+    },
+    haida036: {
+      passwordHash:
+        "60e4003ad9d271450d570edc6b36fc6eac1b542c300e59b92b782ebff200840d",
+      credits: 10,
+    },
+    haida037: {
+      passwordHash:
+        "aeb2d038a753f818c799cd427c1dee26bf023dffe477791849dbf0156e417661",
+      credits: 10,
+    },
+    haida038: {
+      passwordHash:
+        "71c46abd4e16d16cae1e19f8c7a7caab02de1ec3439f53fdc7d8826068b6a0d8",
+      credits: 10,
+    },
+    haida039: {
+      passwordHash:
+        "84bb6fb2f11b10ac53c213ac62e4cac5bf1fde217146e72fcb6d26e16b616ed5",
+      credits: 10,
+    },
+    haida040: {
+      passwordHash:
+        "19a34cbbbce7bc933a63a041d27cfd84fab2f1cc5471fa17225290385733c6d3",
+      credits: 10,
+    },
+    haida041: {
+      passwordHash:
+        "7ae60676a06a742fe9323207b5fa7c6b5d4f9d72c181963c1625ae15f56f1a56",
+      credits: 10,
+    },
+    haida042: {
+      passwordHash:
+        "a94bdf780734537e56d003216701d7a8185d9488760264f4c026a0d2ee9e47a0",
+      credits: 10,
+    },
+    haida043: {
+      passwordHash:
+        "850a111e805abc07a5af9d0c0d3e2b53d4ecd0440db617388cdd29052ae2c2a3",
+      credits: 10,
+    },
+    haida044: {
+      passwordHash:
+        "ccd0815a168d00e3cea8bdb02123f1a7c3096c4c72c7f955ea6de732a2caec96",
+      credits: 10,
+    },
+    haida045: {
+      passwordHash:
+        "926bcb0bb17739773bdb35bbacf50242b5e2d2c5be25f21b1befe95adf867ee3",
+      credits: 10,
+    },
+    haida046: {
+      passwordHash:
+        "a991c01e108ae451b72c324aa43c4cd2697c52f935806fbd318fa6c068bf890b",
+      credits: 10,
+    },
+    haida047: {
+      passwordHash:
+        "62ce5b09954f94f24839ab498444620d09a6a59978e589324a8bb68f96457811",
+      credits: 10,
+    },
+    haida048: {
+      passwordHash:
+        "0268fa76e59201c69a04db772768c37b03b9fe11de9358392a7b164054c6f2f6",
+      credits: 10,
+    },
+    haida049: {
+      passwordHash:
+        "56bf6a01347d42d62ed464d4aa47f7a6148e83a38cefb3ead80971d00166eeda",
+      credits: 10,
+    },
+    haida050: {
+      passwordHash:
+        "81dba35e7460d9bd76988017711c82cc2b562395acb4da4f17bf3674229ebdb1",
+      credits: 10,
+    },
+    haida051: {
+      passwordHash:
+        "c37c700fe661f7e04a417b027107df3daee9f07c53b1680c0097f9bf4e1b239a",
+      credits: 10,
+    },
+    haida052: {
+      passwordHash:
+        "afd668f499dea2cd6e1fa2d3a3c42c9e2a9025b078a5289493d09a9a7620b086",
+      credits: 10,
+    },
+    haida053: {
+      passwordHash:
+        "4f3e2685e9001406c004e319e33195174683a16250fcab56d66d0a31f6c720ea",
+      credits: 10,
+    },
+    haida054: {
+      passwordHash:
+        "7064976860eabd1aeae0d727e62b9d452005935ed277e7d6d601d47b4cbc19e0",
+      credits: 10,
+    },
+    haida055: {
+      passwordHash:
+        "b878c472e12387b7756c76cb33b58e76f4225b533fa9a1a63e4648037905a66d",
+      credits: 10,
+    },
+    haida056: {
+      passwordHash:
+        "145a3c32a6813b37a3c18b6cbf57479b577dc3bac4960adc3dc6a20db509d394",
+      credits: 10,
+    },
+    haida057: {
+      passwordHash:
+        "63a6088de3c996b7c4b795e2c6e53a42fc38e6aa64708bb973de7f4c699f7e5b",
+      credits: 10,
+    },
+    haida058: {
+      passwordHash:
+        "4537a6327cdb8637921d577044f7a656cb907f74cd3c46964fa5f1506bb36df8",
+      credits: 10,
+    },
+    haida059: {
+      passwordHash:
+        "e4deaa71673dd6e9a94ed24b6ae51af1d7edf90fa7748376a50dcad056811d86",
+      credits: 10,
+    },
+    haida060: {
+      passwordHash:
+        "1bb0960e638644bbced8c03c74bd4aa9b1f3c6a5d072ea0019214b19701d1256",
+      credits: 10,
+    },
+    haida061: {
+      passwordHash:
+        "436a68658331476d25bed5c89f47adef892c77013b157b73332e0b0d8bb6f295",
+      credits: 10,
+    },
+    haida062: {
+      passwordHash:
+        "f2afb3d371146b67a33a10dfa78163d81aa3ecc6a9ce9b67e5fddf1192afef86",
+      credits: 10,
+    },
+    haida063: {
+      passwordHash:
+        "ca8cd990d89ca9881b89e7f8a0cfa5fb319708820fcd96d443bdbb4e63d88646",
+      credits: 10,
+    },
+    haida064: {
+      passwordHash:
+        "bacb3b1c1dad2a288585f8603a0fdded694c3460b13da9195f2c3836e61441a1",
+      credits: 10,
+    },
+    haida065: {
+      passwordHash:
+        "b1085e55b7dbdbed164c62114c999a59b0dc9f5a2cd253b4d0fc418bbdae8d6b",
+      credits: 10,
+    },
+    haida066: {
+      passwordHash:
+        "887bf439e2840a8a0c5692f987fdd07cf2fc873f67b7a3add298d12f75edb76c",
+      credits: 10,
+    },
+    haida067: {
+      passwordHash:
+        "7de36512ba3bbed804389e114c81dc1b42ec4d37b0c69c5c590c0e092d0dd578",
+      credits: 10,
+    },
+    haida068: {
+      passwordHash:
+        "e926f02a8a3bf6d20f72470ac06a3632eedac18f22fae2a49c2db6a18e4e1a5c",
+      credits: 10,
+    },
+    haida069: {
+      passwordHash:
+        "9954fb3818c938cf4cc9eff2d77b0f59f1e26f11100da794deced118fb52894e",
+      credits: 10,
+    },
+    haida070: {
+      passwordHash:
+        "96d0980e8eea65434689067995e0f22124620cc3eb4357c867c5d0878f78a0bb",
+      credits: 10,
+    },
+    haida071: {
+      passwordHash:
+        "5afb2f6341812839b57ebde62ea8f3454731966252a20e7b0ad1adca2fc0eb13",
+      credits: 10,
+    },
+    haida072: {
+      passwordHash:
+        "20003637ca72c5550ae756e81c15168557c70a3520b4dfda17f10ad31697a789",
+      credits: 10,
+    },
+    haida073: {
+      passwordHash:
+        "4c10eb74adff5d76c7e748437117a4772b50e15eae23856bc742b037b6286a6e",
+      credits: 10,
+    },
+    haida074: {
+      passwordHash:
+        "05241ce31c358f3d4ab18b40f75bf99adc860ee5a5697fe51f6819158bb40afa",
+      credits: 10,
+    },
+    haida075: {
+      passwordHash:
+        "5c018b8280f32ca70d94bb1602b0be32b082105b9268a01c9f43627f72e7e95f",
+      credits: 10,
+    },
+    haida076: {
+      passwordHash:
+        "401854ed3bd0a8c875cb1562edb389787d14ddb7177e5e2585ef57677402aa0e",
+      credits: 10,
+    },
+    haida077: {
+      passwordHash:
+        "c39be22d87de448581f34e23e9be5bb12dd342f7146e7b0e0b8beb718aa848f8",
+      credits: 10,
+    },
+    haida078: {
+      passwordHash:
+        "7511a05aba2b5b5722c8462e523bfe7d403f60f70a05a09d0cde2516cd65893e",
+      credits: 10,
+    },
+    haida079: {
+      passwordHash:
+        "056e460f552bcebc3cedea544671877f6ce9b7da062d33398ba2056a869896be",
+      credits: 10,
+    },
+    haida080: {
+      passwordHash:
+        "78e8291e65ef4173111cc91365035d2f9725d9935264172772c65c6ac536033c",
+      credits: 10,
+    },
+    haida081: {
+      passwordHash:
+        "d943d4ed96edbabc812f59558e683336dc559f42fa8fbddf90486a54ae378f88",
+      credits: 10,
+    },
+    haida082: {
+      passwordHash:
+        "3c714841ee755a0a0a7cc177f1b6ff0672812b96ee7971643df95960bcabb87f",
+      credits: 10,
+    },
+    haida083: {
+      passwordHash:
+        "d336bad2ce5ead21e0dfe282c3bc9808a3b0c34346cff429920e02d7041affda",
+      credits: 10,
+    },
+    haida084: {
+      passwordHash:
+        "011d6b996a75a9567af36536023f82b718b37acf34f7e88f5bf7876fe543cb5e",
+      credits: 10,
+    },
+    haida085: {
+      passwordHash:
+        "656434066142befa27a125c6a125df992e1a476ea1f07e58dd51c1130f4ee9e8",
+      credits: 10,
+    },
+    haida086: {
+      passwordHash:
+        "98a11fed160537244bc68d37e5a93a910f3141d50727fe1dddc1e6fc8f24aef9",
+      credits: 10,
+    },
+    haida087: {
+      passwordHash:
+        "ba68e742a459464aea1ad0dabadedcba6f56adae416a538bc5d610d65c14db86",
+      credits: 10,
+    },
+    haida088: {
+      passwordHash:
+        "5f4ec7f85a6bb4e3d3cd0503057e6b523134812cec2469a6a891b7448fb63368",
+      credits: 10,
+    },
+    haida089: {
+      passwordHash:
+        "8070144c273a5a8acece6ff81ae6cac7383d8eee18e720615911cbbbe83bbe13",
+      credits: 10,
+    },
+    haida090: {
+      passwordHash:
+        "c2e40adfaaf9df0b93421863d5552e013c984a39031e2fb7dd16c3adc41d2034",
+      credits: 10,
+    },
+    haida091: {
+      passwordHash:
+        "9b18b93f54c4f548d6c5f0fa26c74d860568191bc4bcc6aaa16b6932cf08b3fa",
+      credits: 10,
+    },
+    haida092: {
+      passwordHash:
+        "45d7369463aa251c95b58fc98fe3960ca717028b6e5a0afcd6784db29a482a42",
+      credits: 10,
+    },
+    haida093: {
+      passwordHash:
+        "2533c367e175d95ff51815a37704e5563aa958affbac8252b9ded5e0bc40fdb0",
+      credits: 10,
+    },
+    haida094: {
+      passwordHash:
+        "0ec9ecd3cf4dad5d5b2a91d3e79708e360017f8ff736cd51feb47686c688b545",
+      credits: 10,
+    },
+    haida095: {
+      passwordHash:
+        "845187dfa4bb13807583a1d663159de5ce9259b90c50bc4a4a0fc669d852086b",
+      credits: 10,
+    },
+    haida096: {
+      passwordHash:
+        "75aca2fa6997f2dfa9c754386ba33e4d4704ca52f548fe5575e4533bd0d1962e",
+      credits: 10,
+    },
+    haida097: {
+      passwordHash:
+        "202fa30f9704b4e2961bf931cb58934f4ee5c1cd834eb44f7349817a19eaf25f",
+      credits: 10,
+    },
+    haida098: {
+      passwordHash:
+        "0f4a47981cf82e4e571ebfafd0493db657cb1de0ab6bc779955270917ecb5cd2",
+      credits: 10,
+    },
+    haida099: {
+      passwordHash:
+        "675637665fe233d605599feafa03c8bae4432f373ecd380d2c48ec8e6ce75215",
+      credits: 10,
+    },
+    haida100: {
+      passwordHash:
+        "f461bd96405afd3eab13949f4ab4faf10dcb168d018544f4c58066f2397ec507",
+      credits: 10,
+    },
+  };
+  window.validUsers = validUsers;
+
   // ---------- 工具 ----------
   function $(s, r) {
     return (r || document).querySelector(s);
@@ -69,6 +574,257 @@
     toast._t = setTimeout(function () {
       t.classList.remove("show");
     }, 2200);
+  }
+
+  // ---------- 用户 / 认证 / 额度 工具 ----------
+  function sha256Js(message) {
+    function utf8Bytes(str) {
+      return unescape(encodeURIComponent(str));
+    }
+
+    function toWords(bytes) {
+      var words = [];
+      for (var i = 0; i < bytes.length; i += 4) {
+        words.push(
+          ((bytes.charCodeAt(i) << 24) |
+            ((i + 1 < bytes.length ? bytes.charCodeAt(i + 1) : 0) << 16) |
+            ((i + 2 < bytes.length ? bytes.charCodeAt(i + 2) : 0) << 8) |
+            (i + 3 < bytes.length ? bytes.charCodeAt(i + 3) : 0)) >>>
+            0,
+        );
+      }
+      return words;
+    }
+
+    function rotr(x, n) {
+      return (x >>> n) | (x << (32 - n));
+    }
+
+    var K = [
+      0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1,
+      0x923f82a4, 0xab1c5ed5, 0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3,
+      0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174, 0xe49b69c1, 0xefbe4786,
+      0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
+      0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147,
+      0x06ca6351, 0x14292967, 0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13,
+      0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85, 0xa2bfe8a1, 0xa81a664b,
+      0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
+      0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a,
+      0x5b9cca4f, 0x682e6ff3, 0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
+      0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2,
+    ];
+
+    var bytes = utf8Bytes(String(message || ""));
+    var bitLen = bytes.length * 8;
+    var words = toWords(bytes);
+    words.push(0x80 << 24);
+    while ((words.length % 16) !== 14) words.push(0);
+    words.push((bitLen / 0x100000000) >>> 0);
+    words.push(bitLen >>> 0);
+
+    var h0 = 0x6a09e667;
+    var h1 = 0xbb67ae85;
+    var h2 = 0x3c6ef372;
+    var h3 = 0xa54ff53a;
+    var h4 = 0x510e527f;
+    var h5 = 0x9b05688c;
+    var h6 = 0x1f83d9ab;
+    var h7 = 0x5be0cd19;
+
+    for (var chunk = 0; chunk < words.length; chunk += 16) {
+      var w = new Array(64);
+      for (var i = 0; i < 16; i++) w[i] = words[chunk + i] >>> 0;
+      for (var i = 16; i < 64; i++) {
+        var s0 = rotr(w[i - 15], 7) ^ rotr(w[i - 15], 18) ^ (w[i - 15] >>> 3);
+        var s1 = rotr(w[i - 2], 17) ^ rotr(w[i - 2], 19) ^ (w[i - 2] >>> 10);
+        w[i] = (w[i - 16] + s0 + w[i - 7] + s1) >>> 0;
+      }
+
+      var a = h0;
+      var b = h1;
+      var c = h2;
+      var d = h3;
+      var e = h4;
+      var f = h5;
+      var g = h6;
+      var h = h7;
+
+      for (var i = 0; i < 64; i++) {
+        var S1 = rotr(e, 6) ^ rotr(e, 11) ^ rotr(e, 25);
+        var ch = (e & f) ^ (~e & g);
+        var temp1 = (h + S1 + ch + K[i] + w[i]) >>> 0;
+        var S0 = rotr(a, 2) ^ rotr(a, 13) ^ rotr(a, 22);
+        var maj = (a & b) ^ (a & c) ^ (b & c);
+        var temp2 = (S0 + maj) >>> 0;
+
+        h = g;
+        g = f;
+        f = e;
+        e = (d + temp1) >>> 0;
+        d = c;
+        c = b;
+        b = a;
+        a = (temp1 + temp2) >>> 0;
+      }
+
+      h0 = (h0 + a) >>> 0;
+      h1 = (h1 + b) >>> 0;
+      h2 = (h2 + c) >>> 0;
+      h3 = (h3 + d) >>> 0;
+      h4 = (h4 + e) >>> 0;
+      h5 = (h5 + f) >>> 0;
+      h6 = (h6 + g) >>> 0;
+      h7 = (h7 + h) >>> 0;
+    }
+
+    return [h0, h1, h2, h3, h4, h5, h6, h7]
+      .map(function (v) {
+        return ("00000000" + (v >>> 0).toString(16)).slice(-8);
+      })
+      .join("");
+  }
+
+  async function sha256Hex(text) {
+    try {
+      if (window.crypto && window.crypto.subtle) {
+        const enc = new TextEncoder();
+        const data = enc.encode(String(text || ""));
+        const hash = await window.crypto.subtle.digest("SHA-256", data);
+        return Array.from(new Uint8Array(hash))
+          .map((b) => b.toString(16).padStart(2, "0"))
+          .join("");
+      }
+    } catch (e) {
+      // fallback to pure JS implementation below
+    }
+    return sha256Js(String(text || ""));
+  }
+
+  function getCurrentUser() {
+    return localStorage.getItem("hndx_current_user") || null;
+  }
+  function setCurrentUser(username) {
+    if (username) localStorage.setItem("hndx_current_user", username);
+    else localStorage.removeItem("hndx_current_user");
+    updateUserInfoUI();
+  }
+
+  function getUserCredits(username) {
+    if (!username) return 0;
+    var key = "hndx_user_credits_" + username;
+    var v = localStorage.getItem(key);
+    if (v != null) return Number(v);
+    if (
+      window.validUsers &&
+      window.validUsers[username] &&
+      window.validUsers[username].credits != null
+    ) {
+      var init = Number(window.validUsers[username].credits) || 0;
+      localStorage.setItem(key, String(init));
+      return init;
+    }
+    return 0;
+  }
+  function setUserCredits(username, n) {
+    if (!username) return;
+    var key = "hndx_user_credits_" + username;
+    localStorage.setItem(key, String(Number(n) || 0));
+    updateUserInfoUI();
+  }
+
+  function updateUserInfoUI() {
+    var nameEl = $("#user-name");
+    var creditsEl = $("#user-credits");
+    var btn = $("#login-open-btn");
+    var user = getCurrentUser();
+    if (user) {
+      var credits = getUserCredits(user);
+      if (nameEl) {
+        nameEl.style.display = "inline-block";
+        nameEl.textContent = "用户：" + user;
+      }
+      if (creditsEl) {
+        creditsEl.style.display = "inline-block";
+        creditsEl.textContent = "剩余额度：" + credits;
+      }
+      if (btn) btn.textContent = "账户管理";
+    } else {
+      if (nameEl) nameEl.style.display = "none";
+      if (creditsEl) creditsEl.style.display = "none";
+      if (btn) btn.textContent = "登录 / 注册";
+    }
+  }
+
+  function initUserCredits() {
+    // 不预分配所有账号 credits，避免大规模写入 localStorage；使用时按需初始化
+  }
+
+  function attachLoginHandlers() {
+    var openBtn = $("#login-open-btn");
+    var modal = $("#login-modal");
+    var submitBtn = $("#login-submit");
+    var logoutBtn = $("#login-logout");
+    var accountInput = $("#login-account");
+    var pwdInput = $("#login-password");
+
+    if (openBtn && modal) {
+      openBtn.addEventListener("click", function () {
+        modal.style.display = "flex";
+        var user = getCurrentUser();
+        if (user && accountInput) accountInput.value = user;
+        updateLoginModalButtons();
+      });
+    }
+
+    function updateLoginModalButtons() {
+      var user = getCurrentUser();
+      if (user) {
+        if (logoutBtn) logoutBtn.style.display = "inline-block";
+        if (submitBtn) submitBtn.style.display = "none";
+      } else {
+        if (logoutBtn) logoutBtn.style.display = "none";
+        if (submitBtn) submitBtn.style.display = "inline-block";
+      }
+    }
+
+    if (submitBtn) {
+      submitBtn.addEventListener("click", async function () {
+        var acc = accountInput ? accountInput.value.trim() : "";
+        var pwd = pwdInput ? pwdInput.value : "";
+        if (!acc || !pwd) {
+          alert("请填写账号与密码");
+          return;
+        }
+        var hashed = await sha256Hex(pwd);
+        if (
+          window.validUsers &&
+          window.validUsers[acc] &&
+          window.validUsers[acc].passwordHash === hashed
+        ) {
+          setCurrentUser(acc);
+          getUserCredits(acc);
+          alert("登录成功");
+          if (modal) modal.style.display = "none";
+          toast("登录成功：" + acc);
+        } else {
+          alert("账号或密码错误");
+        }
+        updateLoginModalButtons();
+      });
+    }
+
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", function () {
+        setCurrentUser(null);
+        alert("已注销");
+        toast("已注销");
+        updateLoginModalButtons();
+        var modalEl = $("#login-modal");
+        if (modalEl) modalEl.style.display = "none";
+      });
+    }
+
+    window.updateLoginModalButtons = updateLoginModalButtons;
   }
 
   // ---------- 存储 ----------
@@ -1027,6 +1783,17 @@
     state.fav = loadSet(LS.fav);
     state.uploaded = loadUploaded();
     bindEvents();
+    // 在初始化时确保生成/加载测试账号（存放于 localStorage，不会写入仓库源代码）
+    // ensureValidUsers removed: using hard-coded validUsers with password hashes
+    window.validUsers = window.validUsers || validUsers;
+    // 初始化用户额度与登录控件
+    try {
+      initUserCredits();
+      attachLoginHandlers();
+      updateUserInfoUI();
+    } catch (e) {
+      console.warn("登录初始化失败", e);
+    }
 
     fetch("questions.json")
       .then(function (res) {
@@ -1071,6 +1838,18 @@
       return;
     }
 
+    // 登录与额度检查
+    var user = getCurrentUser();
+    if (!user) {
+      alert("请先登录或联系微信充值");
+      return;
+    }
+    var credits = getUserCredits(user);
+    if (credits <= 0) {
+      alert("您的额度已用完，请联系微信充值或获取更多额度");
+      return;
+    }
+
     var userAnswer = inputEl.value.trim();
     submitBtn.disabled = true;
     submitBtn.innerText = "⏳ 阅卷老师打分中...";
@@ -1098,6 +1877,15 @@
         resultBox.innerHTML =
           "<p style='color: #dc3545; margin: 0;'>" + data.error + "</p>";
       } else {
+        // 扣减一次额度
+        try {
+          var remaining = Math.max(0, getUserCredits(user) - 1);
+          setUserCredits(user, remaining);
+          toast("已扣除 1 次额度，剩余：" + remaining + " 次");
+        } catch (e) {
+          console.warn("扣减额度失败", e);
+        }
+
         var hitHtml =
           data.hit_points && data.hit_points.length > 0
             ? data.hit_points.join("；")
@@ -1129,6 +1917,7 @@
     } finally {
       submitBtn.disabled = false;
       submitBtn.innerText = "🤖 AI 智能批改打分";
+      updateUserInfoUI();
     }
   }
 
@@ -1268,6 +2057,18 @@
       return;
     }
 
+    // 登录与额度检查
+    var user = getCurrentUser();
+    if (!user) {
+      alert("请先登录或联系微信充值");
+      return;
+    }
+    var credits = getUserCredits(user);
+    if (credits <= 0) {
+      alert("您的额度已用完，请联系微信充值或获取更多额度");
+      return;
+    }
+
     var userAnswer = inputEl.value.trim();
     submitBtn.disabled = true;
     submitBtn.innerText = "⏳ 阅卷老师打分中...";
@@ -1295,6 +2096,15 @@
         resultBox.innerHTML =
           "<p style='color: #dc3545; margin: 0;'>" + data.error + "</p>";
       } else {
+        // 扣减一次额度
+        try {
+          var remaining = Math.max(0, getUserCredits(user) - 1);
+          setUserCredits(user, remaining);
+          toast("已扣除 1 次额度，剩余：" + remaining + " 次");
+        } catch (e) {
+          console.warn("扣减额度失败", e);
+        }
+
         var hitHtml =
           data.hit_points && data.hit_points.length > 0
             ? data.hit_points.join("；")
@@ -1326,6 +2136,7 @@
     } finally {
       submitBtn.disabled = false;
       submitBtn.innerText = "🤖 AI 智能批改打分";
+      updateUserInfoUI();
     }
   }
 
