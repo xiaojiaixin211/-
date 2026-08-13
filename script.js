@@ -538,7 +538,7 @@
   };
   window.validUsers = validUsers;
   // 将所有预置测试账号的初始额度统一设置为 50（替换原先的 10）
-  Object.keys(window.validUsers || {}).forEach(function(u){
+  Object.keys(window.validUsers || {}).forEach(function (u) {
     if (window.validUsers[u]) window.validUsers[u].credits = 50;
   });
 
@@ -625,7 +625,7 @@
     var bitLen = bytes.length * 8;
     var words = toWords(bytes);
     words.push(0x80 << 24);
-    while ((words.length % 16) !== 14) words.push(0);
+    while (words.length % 16 !== 14) words.push(0);
     words.push((bitLen / 0x100000000) >>> 0);
     words.push(bitLen >>> 0);
 
@@ -742,11 +742,11 @@
   // ---------- 会员状态工具 ----------
   function isUserPermanent(username) {
     if (!username) return false;
-    return localStorage.getItem('hndx_user_perm_' + username) === '1';
+    return localStorage.getItem("hndx_user_perm_" + username) === "1";
   }
   function getUserVipExpiry(username) {
     if (!username) return 0;
-    return Number(localStorage.getItem('hndx_user_vip_' + username) || 0);
+    return Number(localStorage.getItem("hndx_user_vip_" + username) || 0);
   }
   function isUserVipValid(username) {
     if (!username) return false;
@@ -770,10 +770,14 @@
           memberText = " | 会员: 永久";
         } else if (isUserVipValid(user)) {
           var exp = getUserVipExpiry(user);
-          var days = Math.max(0, Math.ceil((exp - Date.now()) / (1000 * 60 * 60 * 24)));
+          var days = Math.max(
+            0,
+            Math.ceil((exp - Date.now()) / (1000 * 60 * 60 * 24)),
+          );
           memberText = " | 会员: 月卡(" + days + " 天)";
         }
-        creditsEl.textContent = "[账号: " + user + " | 剩余额度: " + credits + "]" + memberText;
+        creditsEl.textContent =
+          "[账号: " + user + " | 剩余额度: " + credits + "]" + memberText;
       }
       // 在会员弹窗内显示详细会员状态（如果弹窗存在）
       var ms = $("#member-status");
@@ -795,7 +799,8 @@
       if (nameEl) nameEl.style.display = "none";
       if (creditsEl) creditsEl.style.display = "none";
       if (btn) btn.textContent = "登录 / 注册";
-      var ms = $("#member-status"); if (ms) ms.textContent = '未登录';
+      var ms = $("#member-status");
+      if (ms) ms.textContent = "未登录";
     }
   }
 
@@ -2149,18 +2154,46 @@
       "<p style='color: #666; margin: 0;'>AI 正在对照采分点分析您的回答...</p>";
 
     try {
-      var WORKER_URL = "https://haida-ai-grader.xiaojiaixin211.workers.dev/";
+      var WORKER_URLS = [
+        "https://haida-ai-grader.xiaojiaixin211.workers.dev/",
+        "https://haida-ai-grader.xiaojiaixin211.workers.dev/api/grade",
+        "https://haida-ai-grader.xiaojiaixin211.workers.dev/grade",
+      ];
 
-      var response = await fetch(WORKER_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: q.title,
-          analysis: q.analysis || "",
-          max_score: 10,
-          user_answer: userAnswer,
-        }),
+      var response = null;
+      var lastFetchError = null;
+      var requestBody = JSON.stringify({
+        title: q.title,
+        analysis: q.analysis || "",
+        max_score: 10,
+        user_answer: userAnswer,
       });
+
+      for (var i = 0; i < WORKER_URLS.length; i++) {
+        try {
+          response = await fetch(WORKER_URLS[i], {
+            method: "POST",
+            mode: "cors",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            body: requestBody,
+          });
+          if (response && response.ok) {
+            break;
+          }
+          lastFetchError = new Error(
+            "HTTP " + response.status + " from " + WORKER_URLS[i],
+          );
+        } catch (error) {
+          lastFetchError = error;
+        }
+      }
+
+      if (!response || !response.ok) {
+        throw lastFetchError || new Error("AI 批改服务返回异常");
+      }
 
       var data = await response.json();
 
@@ -2216,52 +2249,100 @@
 
   // ---------- Activation code helpers ----------
   function loadUsedActivationCodes() {
-    try { return JSON.parse(localStorage.getItem('hndx_used_codes') || '[]'); } catch (e) { return []; }
+    try {
+      return JSON.parse(localStorage.getItem("hndx_used_codes") || "[]");
+    } catch (e) {
+      return [];
+    }
   }
-  function saveUsedActivationCodes(arr) { localStorage.setItem('hndx_used_codes', JSON.stringify(arr)); }
-  function isActivationCodeUsed(code) { return loadUsedActivationCodes().indexOf(code) !== -1; }
-  function markActivationCodeUsed(code) { var a = loadUsedActivationCodes(); if (a.indexOf(code) === -1) { a.push(code); saveUsedActivationCodes(a); } }
-  function findActivation(code) { if (!window.ACTIVATION_CODES) return null; return window.ACTIVATION_CODES.find(function (c) { return c.code === code; }) || null; }
+  function saveUsedActivationCodes(arr) {
+    localStorage.setItem("hndx_used_codes", JSON.stringify(arr));
+  }
+  function isActivationCodeUsed(code) {
+    return loadUsedActivationCodes().indexOf(code) !== -1;
+  }
+  function markActivationCodeUsed(code) {
+    var a = loadUsedActivationCodes();
+    if (a.indexOf(code) === -1) {
+      a.push(code);
+      saveUsedActivationCodes(a);
+    }
+  }
+  function findActivation(code) {
+    if (!window.ACTIVATION_CODES) return null;
+    return (
+      window.ACTIVATION_CODES.find(function (c) {
+        return c.code === code;
+      }) || null
+    );
+  }
 
   // Redeem an activation code for the current user.
   // month -> set VIP expiry +30 days; perm -> mark user as permanent in localStorage
   function redeemActivationCode(code) {
     var user = getCurrentUser();
-    if (!user) return { success: false, message: '请先登录后再使用激活码' };
-    if (!code || typeof code !== 'string') return { success: false, message: '请输入有效的激活码' };
+    if (!user) return { success: false, message: "请先登录后再使用激活码" };
+    if (!code || typeof code !== "string")
+      return { success: false, message: "请输入有效的激活码" };
     var found = findActivation(code.trim());
-    if (!found) return { success: false, message: '无效激活码' };
-    if (isActivationCodeUsed(code.trim())) return { success: false, message: '该激活码已被使用' };
+    if (!found) return { success: false, message: "无效激活码" };
+    if (isActivationCodeUsed(code.trim()))
+      return { success: false, message: "该激活码已被使用" };
 
-    if (found.type === 'month') {
+    if (found.type === "month") {
       try {
         // 设置或延长月卡到期时间（30 天后或在当前到期时间基础上延长30天）
         var curExp = getUserVipExpiry(user) || 0;
         var base = curExp > Date.now() ? curExp : Date.now();
         var newExp = base + 30 * 24 * 60 * 60 * 1000; // 30 days
-        localStorage.setItem('hndx_user_vip_' + user, String(newExp));
+        localStorage.setItem("hndx_user_vip_" + user, String(newExp));
         markActivationCodeUsed(code.trim());
         updateUserInfoUI();
-        return { success: true, message: '月卡激活成功：已开通/延长 30 天会员' };
+        return {
+          success: true,
+          message: "月卡激活成功：已开通/延长 30 天会员",
+        };
       } catch (e) {
-        return { success: false, message: '处理激活码时发生错误' };
+        return { success: false, message: "处理激活码时发生错误" };
       }
-    } else if (found.type === 'perm') {
+    } else if (found.type === "perm") {
       try {
-        localStorage.setItem('hndx_user_perm_' + user, '1');
+        localStorage.setItem("hndx_user_perm_" + user, "1");
         markActivationCodeUsed(code.trim());
         updateUserInfoUI();
-        return { success: true, message: '永久卡激活成功：已为该账号开通永久权限' };
+        return {
+          success: true,
+          message: "永久卡激活成功：已为该账号开通永久权限",
+        };
       } catch (e) {
-        return { success: false, message: '处理激活码时发生错误' };
+        return { success: false, message: "处理激活码时发生错误" };
       }
     }
-    return { success: false, message: '未知激活码类型' };
+    return { success: false, message: "未知激活码类型" };
   }
 
   // expose helper to global for console usage
   window.redeemActivationCode = redeemActivationCode;
   window.loadUsedActivationCodes = loadUsedActivationCodes;
   window.ACTIVATION_CODES = window.ACTIVATION_CODES || ACTIVATION_CODES || [];
+})(); // ====== 手动绑定会员充值按钮点击事件 ======
+document.addEventListener("DOMContentLoaded", function () {
+  // 假设你的充值按钮ID是 activation-code-submit，输入框ID是 activation-code-input
+  var submitBtn = document.getElementById("activation-code-submit");
+  var inputField = document.getElementById("activation-code-input");
 
-})();
+  if (submitBtn && inputField) {
+    submitBtn.addEventListener("click", function () {
+      var code = inputField.value.trim();
+      // 调用你刚刚看到的 redeemActivationCode 函数
+      var result = redeemActivationCode(code);
+
+      if (result && result.message) {
+        alert(result.message);
+      }
+      if (result && result.success) {
+        location.reload(); // 激活成功后自动刷新网页
+      }
+    });
+  }
+});
