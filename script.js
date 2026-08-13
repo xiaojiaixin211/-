@@ -542,6 +542,111 @@
     if (window.validUsers[u]) window.validUsers[u].credits = 50;
   });
 
+  /* AUTO-GENERATED ACTIVATION CODES START */
+  var ACTIVATION_CODES = [
+    { code: 'MONTH-2PAGXK', type: 'month' },
+    { code: 'MONTH-3PO61Q', type: 'month' },
+    { code: 'MONTH-4P9GQO', type: 'month' },
+    { code: 'MONTH-772OH3', type: 'month' },
+    { code: 'MONTH-7G23MM', type: 'month' },
+    { code: 'MONTH-8PATRJ', type: 'month' },
+    { code: 'MONTH-94QZCM', type: 'month' },
+    { code: 'MONTH-A2FUEV', type: 'month' },
+    { code: 'MONTH-A3WG8L', type: 'month' },
+    { code: 'MONTH-AAL37B', type: 'month' },
+    { code: 'MONTH-AENFZX', type: 'month' },
+    { code: 'MONTH-AKWU2O', type: 'month' },
+    { code: 'MONTH-BMCLLU', type: 'month' },
+    { code: 'MONTH-BW6BOW', type: 'month' },
+    { code: 'MONTH-D08X0O', type: 'month' },
+    { code: 'MONTH-FDEE06', type: 'month' },
+    { code: 'MONTH-FDRL01', type: 'month' },
+    { code: 'MONTH-FQXJ4N', type: 'month' },
+    { code: 'MONTH-FYF5A0', type: 'month' },
+    { code: 'MONTH-GNASC9', type: 'month' },
+    { code: 'MONTH-HBDFKM', type: 'month' },
+    { code: 'MONTH-HOD420', type: 'month' },
+    { code: 'MONTH-J99U2C', type: 'month' },
+    { code: 'MONTH-JJ23XH', type: 'month' },
+    { code: 'MONTH-JUXZ64', type: 'month' },
+    { code: 'MONTH-KY7XGL', type: 'month' },
+    { code: 'MONTH-L4A850', type: 'month' },
+    { code: 'MONTH-LI49ZJ', type: 'month' },
+    { code: 'MONTH-LYA2H8', type: 'month' },
+    { code: 'MONTH-M02LNV', type: 'month' },
+    { code: 'MONTH-MA9CMO', type: 'month' },
+    { code: 'MONTH-NE9KIH', type: 'month' },
+    { code: 'MONTH-O2Q007', type: 'month' },
+    { code: 'MONTH-OVD9OI', type: 'month' },
+    { code: 'MONTH-PD2ENL', type: 'month' },
+    { code: 'MONTH-PEGTDZ', type: 'month' },
+    { code: 'MONTH-QLLKEE', type: 'month' },
+    { code: 'MONTH-QLO7QE', type: 'month' },
+    { code: 'MONTH-RWFBUR', type: 'month' },
+    { code: 'MONTH-SP7UVY', type: 'month' },
+    { code: 'MONTH-T8VZ51', type: 'month' },
+    { code: 'MONTH-TN0S3M', type: 'month' },
+    { code: 'MONTH-U6L76T', type: 'month' },
+    { code: 'MONTH-V42E75', type: 'month' },
+    { code: 'MONTH-WBY1IA', type: 'month' },
+    { code: 'MONTH-X95YF9', type: 'month' },
+    { code: 'MONTH-XY6BC7', type: 'month' },
+    { code: 'MONTH-ZD987C', type: 'month' },
+    { code: 'MONTH-ZLKSJ4', type: 'month' },
+    { code: 'MONTH-ZNJFKR', type: 'month' },
+    { code: 'PERM-0HB6E2', type: 'perm' },
+    { code: 'PERM-26GICH', type: 'perm' },
+    { code: 'PERM-2E3L7O', type: 'perm' },
+    { code: 'PERM-2VB0NG', type: 'perm' },
+    { code: 'PERM-2ZMVOI', type: 'perm' },
+    { code: 'PERM-34ND92', type: 'perm' },
+    { code: 'PERM-5B5OCU', type: 'perm' },
+    { code: 'PERM-8E9PJO', type: 'perm' },
+    { code: 'PERM-8M13RE', type: 'perm' },
+    { code: 'PERM-8SP67W', type: 'perm' },
+    { code: 'PERM-ALMLMK', type: 'perm' },
+    { code: 'PERM-CDB6TW', type: 'perm' },
+    { code: 'PERM-DXEUCC', type: 'perm' },
+    { code: 'PERM-DYD1CP', type: 'perm' },
+    { code: 'PERM-EI0HG5', type: 'perm' },
+    { code: 'PERM-EM5SNE', type: 'perm' },
+    { code: 'PERM-F19T0A', type: 'perm' },
+    { code: 'PERM-F2XR64', type: 'perm' },
+    { code: 'PERM-GFNRGY', type: 'perm' },
+    { code: 'PERM-GHK65F', type: 'perm' },
+    { code: 'PERM-HYVQZN', type: 'perm' },
+    { code: 'PERM-IRFYQJ', type: 'perm' },
+    { code: 'PERM-IS527X', type: 'perm' },
+    { code: 'PERM-JR2NLI', type: 'perm' },
+    { code: 'PERM-JXF7FS', type: 'perm' },
+    { code: 'PERM-K299J0', type: 'perm' },
+    { code: 'PERM-K45L9Y', type: 'perm' },
+    { code: 'PERM-KOLTAR', type: 'perm' },
+    { code: 'PERM-KTQ9O3', type: 'perm' },
+    { code: 'PERM-MST9FP', type: 'perm' },
+    { code: 'PERM-O5US2Y', type: 'perm' },
+    { code: 'PERM-OIARL4', type: 'perm' },
+    { code: 'PERM-OWQ9NY', type: 'perm' },
+    { code: 'PERM-PEY4T5', type: 'perm' },
+    { code: 'PERM-PWW837', type: 'perm' },
+    { code: 'PERM-Q9UWUD', type: 'perm' },
+    { code: 'PERM-QN158H', type: 'perm' },
+    { code: 'PERM-QZI0CH', type: 'perm' },
+    { code: 'PERM-RA1AEY', type: 'perm' },
+    { code: 'PERM-U7AW76', type: 'perm' },
+    { code: 'PERM-UPUO78', type: 'perm' },
+    { code: 'PERM-V84E2Y', type: 'perm' },
+    { code: 'PERM-VK44NF', type: 'perm' },
+    { code: 'PERM-VSHDNG', type: 'perm' },
+    { code: 'PERM-WZZW1I', type: 'perm' },
+    { code: 'PERM-XMQ3GO', type: 'perm' },
+    { code: 'PERM-XUHMAM', type: 'perm' },
+    { code: 'PERM-XVJVO4', type: 'perm' },
+    { code: 'PERM-YQ8A8G', type: 'perm' },
+    { code: 'PERM-YVCCPM', type: 'perm' },
+  ];
+  /* AUTO-GENERATED ACTIVATION CODES END */
+
   // ---------- 工具 ----------
   function $(s, r) {
     return (r || document).querySelector(s);
@@ -2172,4 +2277,52 @@
   }
 
   window.handleCardAIGrade = handleCardAIGrade;
+
+  // ---------- Activation code helpers ----------
+  function loadUsedActivationCodes() {
+    try { return JSON.parse(localStorage.getItem('hndx_used_codes') || '[]'); } catch (e) { return []; }
+  }
+  function saveUsedActivationCodes(arr) { localStorage.setItem('hndx_used_codes', JSON.stringify(arr)); }
+  function isActivationCodeUsed(code) { return loadUsedActivationCodes().indexOf(code) !== -1; }
+  function markActivationCodeUsed(code) { var a = loadUsedActivationCodes(); if (a.indexOf(code) === -1) { a.push(code); saveUsedActivationCodes(a); } }
+  function findActivation(code) { if (!window.ACTIVATION_CODES) return null; return window.ACTIVATION_CODES.find(function (c) { return c.code === code; }) || null; }
+
+  // Redeem an activation code for the current user.
+  // month -> +30 credits; perm -> mark user as permanent in localStorage
+  function redeemActivationCode(code) {
+    var user = getCurrentUser();
+    if (!user) return { success: false, message: '请先登录后再使用激活码' };
+    if (!code || typeof code !== 'string') return { success: false, message: '请输入有效的激活码' };
+    var found = findActivation(code.trim());
+    if (!found) return { success: false, message: '无效激活码' };
+    if (isActivationCodeUsed(code.trim())) return { success: false, message: '该激活码已被使用' };
+
+    if (found.type === 'month') {
+      try {
+        var cur = Number(getUserCredits(user)) || 0;
+        setUserCredits(user, cur + 30);
+        markActivationCodeUsed(code.trim());
+        updateUserInfoUI();
+        return { success: true, message: '月卡激活成功：已增加 30 次额度' };
+      } catch (e) {
+        return { success: false, message: '处理激活码时发生错误' };
+      }
+    } else if (found.type === 'perm') {
+      try {
+        localStorage.setItem('hndx_user_perm_' + user, '1');
+        markActivationCodeUsed(code.trim());
+        updateUserInfoUI();
+        return { success: true, message: '永久卡激活成功：已为该账号开通永久权限' };
+      } catch (e) {
+        return { success: false, message: '处理激活码时发生错误' };
+      }
+    }
+    return { success: false, message: '未知激活码类型' };
+  }
+
+  // expose helper to global for console usage
+  window.redeemActivationCode = redeemActivationCode;
+  window.loadUsedActivationCodes = loadUsedActivationCodes;
+  window.ACTIVATION_CODES = window.ACTIVATION_CODES || ACTIVATION_CODES || [];
+
 })();
