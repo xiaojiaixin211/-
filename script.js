@@ -1935,18 +1935,43 @@
       "<p style='color: #666; margin: 0;'>AI 正在对照采分点分析您的回答...</p>";
 
     try {
-      var WORKER_URL = "https://haida-ai-grader.xiaojiaixin211.workers.dev/";
+      // 主接口：腾讯云云函数；备用接口：Cloudflare Worker（主接口故障时自动切换）
+      var PRIMARY_URL =
+        "https://my-exam-app-d2gzree0ob314c962-1426932475.ap-shanghai.app.tcloudbaseapp.com/ai-grader";
+      var FALLBACK_URL = "https://haida-ai-grader.xiaojiaixin211.workers.dev/";
+      var API_URLS = [PRIMARY_URL, FALLBACK_URL];
 
-      var response = await fetch(WORKER_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: question ? question.title : "考研主观题",
-          analysis: question ? question.analysis || question.answer || "" : "",
-          max_score: question ? question.max_score || 10 : 10,
-          user_answer: userAnswer,
-        }),
+      var requestBody = JSON.stringify({
+        title: question ? question.title : "考研主观题",
+        analysis: question ? question.analysis || question.answer || "" : "",
+        max_score: question ? question.max_score || 10 : 10,
+        user_answer: userAnswer,
       });
+
+      var response = null;
+      var lastFetchError = null;
+
+      for (var i = 0; i < API_URLS.length; i++) {
+        try {
+          response = await fetch(API_URLS[i], {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: requestBody,
+          });
+          if (response && response.ok) {
+            break;
+          }
+          lastFetchError = new Error(
+            "HTTP " + response.status + " from " + API_URLS[i],
+          );
+        } catch (error) {
+          lastFetchError = error;
+        }
+      }
+
+      if (!response || !response.ok) {
+        throw lastFetchError || new Error("AI 批改服务返回异常");
+      }
 
       var data = await response.json();
 
@@ -2154,7 +2179,9 @@
       "<p style='color: #666; margin: 0;'>AI 正在对照采分点分析您的回答...</p>";
 
     try {
+      // 主接口：腾讯云云函数；备用接口：Cloudflare Worker（主接口故障时自动切换）
       var WORKER_URLS = [
+        "https://my-exam-app-d2gzree0ob314c962-1426932475.ap-shanghai.app.tcloudbaseapp.com/ai-grader",
         "https://haida-ai-grader.xiaojiaixin211.workers.dev/",
         "https://haida-ai-grader.xiaojiaixin211.workers.dev/api/grade",
         "https://haida-ai-grader.xiaojiaixin211.workers.dev/grade",
